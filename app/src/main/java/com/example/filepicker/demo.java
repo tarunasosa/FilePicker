@@ -40,14 +40,7 @@ public class demo extends AppCompatActivity {
             knife.fromHtml(EXAMPLE);
             knife.setSelection(knife.getEditableText().length());
 
-            setupBold();
-            setupItalic();
-            setupUnderline();
-            setupStrikethrough();
-            setupBullet();
-            setupQuote();
-            setupLink();
-            setupClear();
+
         }
 
         private void setupBold() {
