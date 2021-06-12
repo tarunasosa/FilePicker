@@ -27,11 +27,15 @@ import com.itextpdf.text.Image;
 import com.itextpdf.text.pdf.PdfWriter;
 
 
+import org.apache.pdfbox.io.MemoryUsageSetting;
+import org.apache.pdfbox.multipdf.PDFMergerUtility;
+
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -45,7 +49,8 @@ public class MainActivity extends AppCompatActivity {
     public static final int CAMERA_PERM_CODE = 101;
     String pdfpath;
     public static final int CAMERA_REQUEST_CODE = 102;
-
+    ArrayList<String> selectPath=new ArrayList<>();
+     boolean Checkdocx,Checkimage;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -79,10 +84,6 @@ public class MainActivity extends AppCompatActivity {
                 i.putExtra(FilePickerActivity.EXTRA_ALLOW_CREATE_DIR, false);
                 i.putExtra(FilePickerActivity.EXTRA_MODE, FilePickerActivity.MODE_FILE);
 
-                // Configure initial directory by specifying a String.
-                // You could specify a String like "/storage/emulated/0/", but that can
-                // dangerous. Always use Android's API calls to get paths to the SD-card or
-                // internal memory.
                 i.putExtra(FilePickerActivity.EXTRA_START_PATH, Environment.getExternalStorageDirectory().getPath());
 
                 startActivityForResult(i, FILE_CODE);
@@ -106,14 +107,35 @@ public class MainActivity extends AppCompatActivity {
                 Log.d("path", "" + file.getPath());
                 pdfpath = file.getPath();
 
-                Intent i = new Intent(getApplicationContext(), PDFconverter.class);
-                i.putExtra("pdfpath", pdfpath);
-                startActivity(i);
+
+                selectPath.add(file.getPath());
+//                try {
+//                    downloadAndCombinePDFs(pdfpath);
+//                } catch (IOException e) {
+//                    e.printStackTrace();
+//                }
+
+
+
+//                Intent i = new Intent(getApplicationContext(), PDFconverter.class);
+//                i.putExtra("pdfpath", pdfpath);
+//                startActivity(i);
 
 
                 // Do something with the result...
             }
-            Log.d("tag", "ABsolute Url of Image is " + pickImage);
+            for(int i =0;i<selectPath.size();i++){
+                Checkdocx = selectPath.get(i).contains(".docx");
+                Checkimage =  selectPath.get(i).contains(".jpg");
+
+                if(Checkdocx==true){
+                    Log.d("data:",""+selectPath.get(i));
+                }
+                else if(Checkimage==true){
+                    Log.d("data:",""+selectPath.get(i));
+                }
+            }
+            Log.d("tag", "ABsolute Url of Image is " + selectPath.toString());
         } else if (requestCode == CAMERA_REQUEST_CODE) {
             if (resultCode == Activity.RESULT_OK) {
                 File f = new File(currentPhotoPath);
@@ -232,24 +254,24 @@ public class MainActivity extends AppCompatActivity {
 
         }
     }
-//    private File downloadAndCombinePDFs() throws IOException {
-//        PDFBoxResourceLoader.init(getApplicationContext());
-//        PDFMergerUtility ut = new PDFMergerUtility();
-//        ut.addSource(new File(Environment.getExternalStorageDirectory() + "/a.pdf"));
-//        ut.addSource(new File(Environment.getExternalStorageDirectory() + "/b.pdf"));
-//
-//        final File file = new File(getApplicationContext().getExternalCacheDir(), System.currentTimeMillis() + ".pdf");
-//
-//        final FileOutputStream fileOutputStream = new FileOutputStream(file);
-//        try {
-//            ut.setDestinationStream(fileOutputStream);
-//            ut.mergeDocuments(true);
-//            Toast.makeText(this, "save"+file.getPath(), Toast.LENGTH_SHORT).show();
-//
-//        } finally {
-//            fileOutputStream.close();
-//        }
-//        return file;
-//    }
+      private File downloadAndCombinePDFs(String path1) throws IOException {
+
+        PDFMergerUtility ut = new PDFMergerUtility();
+        ut.addSource(new File(Environment.getExternalStorageDirectory() + "/a.pdf"));
+        ut.addSource(new File(path1));
+
+
+        final File file = new File(getApplicationContext().getExternalCacheDir(), System.currentTimeMillis() + ".pdf");
+
+        final FileOutputStream fileOutputStream = new FileOutputStream(file);
+        try {
+            ut.setDestinationStream(fileOutputStream);
+            ut.mergeDocuments(MemoryUsageSetting.setupTempFileOnly());
+
+        } finally {
+            fileOutputStream.close();
+        }
+        return file;
+    }
 
 }
