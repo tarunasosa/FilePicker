@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginLeft="30dp"
+        android:orientation="vertical">
+
+        <RelativeLayout
+            android:id="@+id/grp1layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+
+            android:layout_gravity="center_horizontal"
+           >
+
+            <RadioGroup
+
+                android:id="@+id/modeGroup1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+               >
+
+                <RadioButton
+                    android:id="@+id/merge"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:buttonTint="@color/black"
+                    android:text="for merge All zip file"
+                    android:textColor="@color/black"
+                    android:textSize="15dp" />
+
+                <RadioButton
+                    android:id="@+id/Nmerge"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:buttonTint="@color/black"
+                    android:text="for not merge All zip file"
+                    android:textColor="@color/black"
+                    android:textSize="15dp" />
+
+
+
+            </RadioGroup>
+        </RelativeLayout>
+
+
+
+
+    </LinearLayout>
+
+</RelativeLayout>

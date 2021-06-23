@@ -5,9 +5,11 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.PopupMenu;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -38,25 +40,38 @@ public class PDFconverter extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pdfconverter);
-        pdfpath = getIntent().getStringExtra("pdfpath");
+//        pdfpath = getIntent().getStringExtra("pdfpath");
         txtData = findViewById(R.id.txtData);
         pdfView = findViewById(R.id.pdfView);
         editbtn=findViewById(R.id.editbtn);
-        ReadTextFromTextFile();
-        TextToPdf();
+//        ReadTextFromTextFile();
+//        TextToPdf();
 
-        File data = new File(String.valueOf(filepath));
+//        File data = new File(String.valueOf(filepath));
+//
+//        pdfView.fromFile(data).show();
 
-        pdfView.fromFile(data).show();
 
         editbtn.setOnClickListener(new View.OnClickListener() {
+
             @Override
             public void onClick(View v) {
-                Intent i=new Intent(getApplicationContext(),EditPDF.class);
-                i.putExtra("editPDFpath",String.valueOf(filepath));
-                startActivity(i);
+                //Creating the instance of PopupMenu
+                PopupMenu popup = new PopupMenu(PDFconverter.this, editbtn);
+                //Inflating the Popup using xml file
+                popup.getMenuInflater().inflate(R.menu.menu_main, popup.getMenu());
+
+                //registering popup with OnMenuItemClickListener
+                popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                    public boolean onMenuItemClick(MenuItem item) {
+                        Toast.makeText(PDFconverter.this,"You Clicked : " + item.getTitle(), Toast.LENGTH_SHORT).show();
+                        return true;
+                    }
+                });
+
+                popup.show();//showing popup menu
             }
-        });
+        });//closing the setOnClickListener method
 
 
 
@@ -64,6 +79,7 @@ public class PDFconverter extends AppCompatActivity {
 
     public void ReadTextFromTextFile() {
         File file = new File(pdfpath);
+        Log.d("dddddd",""+pdfpath);
 
 //Read text from file
         StringBuilder text = new StringBuilder();

@@ -1,29 +1,11 @@
 <resources>
     <string name="app_name">FilePicker</string>
 
-    <string name="nnf_new_folder">New folder</string>
-
-    <string name="nnf_create_folder_error">Failed to create folder</string>
-
-    <string name="nnf_name">Name</string>
-
-    <string name="nnf_select_something_first">Please select something first</string>
-
-    <string name="nnf_need_valid_filename">Please enter or select a valid filename</string>
-
-    <string name="nnf_permission_external_write_denied">Permisson to access filesystem denied</string>
-
-    <string name="nnf_filename">Filename</string>
-
-    <string name="nnf_list_ok">@android:string/ok</string>
-
-    <string name="nnf_list_cancel">@android:string/cancel</string>
-
-    <string name="nnf_new_folder_ok">@android:string/ok</string>
-
-    <string name="nnf_new_folder_cancel">@android:string/cancel</string>
-
-    <string name="app_repo">https://github.com/mthli/Knife</string>
+    <string name="vw_rationale_storage">Need Reading Storage Permission for Picking Files</string>
+    <string name="vw_all">All</string>
+    <string name="vw_up_to_max">Already up to max</string>
+    <string name="vw_confirm">Done</string>
+    <string name="vw_record_audio">Record Audio</string>
 
     <!-- Menu -->
     <string name="menu_undo">Undo</string>
@@ -81,26 +63,28 @@
     <string name="pref_title_add_friends_to_messages">Add friends to messages</string>
 
 
-    -<string-array name="pref_example_list_titles">
+    -
+    <string-array name="pref_example_list_titles">
 
-    <item>Always</item>
+        <item>Always</item>
 
-    <item>When possible</item>
+        <item>When possible</item>
 
-    <item>Never</item>
+        <item>Never</item>
 
-</string-array>
+    </string-array>
 
 
-    -<string-array name="pref_example_list_values">
+    -
+    <string-array name="pref_example_list_values">
 
-    <item>1</item>
+        <item>1</item>
 
-    <item>0</item>
+        <item>0</item>
 
-    <item>-1</item>
+        <item>-1</item>
 
-</string-array>
+    </string-array>
 
     <!-- Example settings for Data & Sync -->
 
@@ -110,38 +94,40 @@
     <string name="pref_title_sync_frequency">Sync frequency</string>
 
 
-    -<string-array name="pref_sync_frequency_titles">
+    -
+    <string-array name="pref_sync_frequency_titles">
 
-    <item>15 minutes</item>
+        <item>15 minutes</item>
 
-    <item>30 minutes</item>
+        <item>30 minutes</item>
 
-    <item>1 hour</item>
+        <item>1 hour</item>
 
-    <item>3 hours</item>
+        <item>3 hours</item>
 
-    <item>6 hours</item>
+        <item>6 hours</item>
 
-    <item>Never</item>
+        <item>Never</item>
 
-</string-array>
+    </string-array>
 
 
-    -<string-array name="pref_sync_frequency_values">
+    -
+    <string-array name="pref_sync_frequency_values">
 
-    <item>15</item>
+        <item>15</item>
 
-    <item>30</item>
+        <item>30</item>
 
-    <item>60</item>
+        <item>60</item>
 
-    <item>180</item>
+        <item>180</item>
 
-    <item>360</item>
+        <item>360</item>
 
-    <item>-1</item>
+        <item>-1</item>
 
-</string-array>
+    </string-array>
 
     <string name="pref_title_system_sync_settings">System sync settings</string>
 

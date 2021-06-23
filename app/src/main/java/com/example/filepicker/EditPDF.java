@@ -3,7 +3,9 @@ package com.example.filepicker;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -29,18 +31,17 @@ public class EditPDF extends AppCompatActivity {
     EditText edit_text;
     String editPDFpath;
     Button savebtn;
-     String Filename;
+    String Filename;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_pdf);
-        ActionBar actionbar = getSupportActionBar();
-        actionbar.hide();
-        edit_text=findViewById(R.id.edit_text);
 
-        savebtn=findViewById(R.id.savebtn);
-        editPDFpath=getIntent().getStringExtra("editPDFpath");
+        edit_text = findViewById(R.id.edit_text);
+
+        savebtn = findViewById(R.id.savebtn);
+        editPDFpath = getIntent().getStringExtra("editPDFpath");
 
         extractPDF();
 
@@ -48,6 +49,26 @@ public class EditPDF extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 EditTextToPdf();
+
+
+                new CountDownTimer(2000, 1000) {
+
+                    public void onTick(long millisUntilFinished) {
+
+                    }
+
+                    public void onFinish() {
+                        Intent i = new Intent(getApplicationContext(), ViewPDF.class);
+                        i.putExtra("getpdfpath", editPDFpath);
+                        Log.d("pathShow",""+editPDFpath);
+                        i.putExtra("from", "edited");
+                        startActivity(i);
+                        finish();
+                    }
+
+                }.start();
+
+//
             }
         });
 
@@ -85,40 +106,32 @@ public class EditPDF extends AppCompatActivity {
             edit_text.setText("Error found is : \n" + e);
         }
     }
+
     public void EditTextToPdf() {
 
-        File file1 = getExternalFilesDir("PDFtoANYFormat");
-        String relativePath = file1.getAbsolutePath() + File.separator + "showPDF";
-        File file = new File(relativePath);
-        if (!file.exists()) {
-            file.mkdirs();
-            Toast.makeText(getApplicationContext(), "create", Toast.LENGTH_SHORT).show();
-        }
 
         Document doc = new Document();
-//        filename = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(System.currentTimeMillis());
+//        storeFilename = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(System.currentTimeMillis());
 //        //String filepath = Environment.getExternalStorageDirectory() + "/" + filename + ".pdf";
 //
-//        filepath = new File(file.getPath() + File.separator +
-//                "/" + filename + ".pdf");
-        File name=new File(editPDFpath);
-        Filename=name.getName();
-        Log.d("name",""+name.getName());
-        Log.e("filepath", "" + editPDFpath);
+//        storeFilepathNname = new File(storeFilePath.getPath() + File.separator +
+//                "/" + storeFilename + ".pdf");
+//        Log.e("filepath", "" + storeFilepathNname);
         try {
             PdfWriter.getInstance(doc, new FileOutputStream(editPDFpath));
             doc.open();
-            String mText = edit_text.getText().toString();
+//            String mText = txtData.getText().toString();
             doc.addAuthor("Text To Pdf");
-            doc.add(new Paragraph(mText));
+            doc.add(new Paragraph(edit_text.getText().toString()));
             doc.close();
-            Toast.makeText(EditPDF.this, "Edit "+Filename + ".pdf\nand saved to\n" + editPDFpath, Toast.LENGTH_SHORT).show();
-            Log.d("path", "" + file.getPath());
+            Toast.makeText(EditPDF.this, editPDFpath + ".pdf\nis saved to\n" , Toast.LENGTH_SHORT).show();
+//            Log.d("path", "" + file.getPath());
+            Log.d("pathShow",""+editPDFpath);
         } catch (Exception e) {
-
             Toast.makeText(EditPDF.this, e.getMessage(), Toast.LENGTH_SHORT).show();
 
         }
+        Log.d("data", "" + editPDFpath);
     }
 
 }

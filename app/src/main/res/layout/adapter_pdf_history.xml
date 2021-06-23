@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="#F3F8FE"
+    android:orientation="horizontal"
+    android:paddingLeft="20dp"
+    android:paddingTop="10dp"
+    android:paddingRight="20dp">
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/pdf_layout"
+      >
+
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/cardview"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_toLeftOf="@id/liner2"
+            android:clickable="true"
+            android:elevation="16dp"
+            android:focusable="true"
+            android:foreground="?android:attr/selectableItemBackground"
+            app:cardCornerRadius="20dp"
+            >
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+                <RelativeLayout
+                    android:id="@+id/relative_main"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="10dp">
+
+                    <LinearLayout
+                        android:id="@id/layout1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="5dp"
+                        android:layout_centerVertical="true">
+
+                        <ImageView
+                            android:id="@+id/recent_update_img"
+                            android:layout_width="50dp"
+                            android:layout_height="50dp"
+                            android:background="@drawable/pdf" />
+                    </LinearLayout>
+
+
+                    <LinearLayout
+                        android:id="@+id/liner1"
+                        android:layout_toRightOf="@id/layout1"
+                        android:layout_width="wrap_content"
+                        android:layout_marginLeft="10dp"
+                        android:layout_centerVertical="true"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerVertical="true"
+                            android:layout_toRightOf="@+id/layout1"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:id="@+id/name1"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textSize="15dp"
+                                android:textStyle="bold"
+                                android:text="name1"
+                                android:textColor="@color/black"
+                                />
+
+                        </LinearLayout>
+
+                        <RelativeLayout
+                            android:id="@+id/layout2"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content">
+                            <TextView
+                                android:id="@+id/path"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:text="File_path"
+                                android:singleLine="true"
+                                android:textSize="15dp"
+                                />
+                        </RelativeLayout>
+                        <RelativeLayout
+                            android:layout_marginTop="15dp"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:visibility="gone">
+
+                            <TextView
+                                android:id="@+id/kbSize"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="KB"
+                                android:textSize="15dp" />
+
+                            <TextView
+                                android:id="@+id/date"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Last Modify Date"
+                                android:layout_alignParentEnd="true"
+                                android:textSize="15dp"
+                                android:layout_alignParentRight="true" />
+
+                        </RelativeLayout>
+
+                    </LinearLayout>
+
+<!--                    <TextView-->
+<!--                        android:layout_alignParentEnd="true"-->
+<!--                        android:layout_width="20dp"-->
+<!--                        android:text="..."-->
+<!--                        android:textSize=""-->
+<!--                        android:layout_height="20dp"/>-->
+
+                </RelativeLayout>
+
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+
+        <LinearLayout
+            android:id="@+id/liner2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="10dp"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:orientation="vertical">
+            <ImageView
+                android:id="@+id/renamebtn"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_gravity="center_horizontal"
+                android:background="@drawable/edit"
+                android:backgroundTint="@color/white"
+                ></ImageView>
+            <ImageView
+                android:id="@+id/btnsharepdf"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:background="@drawable/share"
+                android:backgroundTint="@color/white"
+              ></ImageView>
+            <ImageView
+                android:id="@+id/btndeletepdf"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:background="@drawable/delete"
+                android:backgroundTint="@color/white"
+              ></ImageView>
+
+        </LinearLayout>
+
+
+    </RelativeLayout>
+</RelativeLayout>
