@@ -5,12 +5,12 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="@color/black"
-    tools:context=".MainActivity">
+    android:paddingTop="10dp"
+    tools:context=".AllImage.MainActivity_gallery">
 
 
     <RelativeLayout
-        android:background="@color/black"
+
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
@@ -19,18 +19,19 @@
             android:id="@+id/head"
             android:layout_width="match_parent"
             android:layout_height="100dp"
+            android:visibility="gone"
             app:cardBackgroundColor="@color/black">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center|start"
+                android:layout_marginStart="10dp"
+                android:layout_marginLeft="20dp"
                 android:text="photos_name"
                 android:textColor="@color/white"
                 android:textSize="35sp"
-                android:textStyle="bold"
-                android:layout_marginLeft="20dp"
-                android:layout_marginStart="10dp" />
+                android:textStyle="bold" />
 
 
             <ImageButton
@@ -48,14 +49,46 @@
 
         </androidx.cardview.widget.CardView>
 
+        <RelativeLayout
+            android:id="@+id/actionlayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:paddingLeft="10dp"
+            android:orientation="horizontal">
+
+            <ImageButton
+                android:id="@+id/back_btn"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_alignParentLeft="true"
+                android:background="@drawable/back_btn" />
+
+            <TextView
+                android:id="@+id/changeText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="10dp"
+                android:fontFamily="@font/font_f"
+                android:text="File Picker"
+                android:textColor="#666666"
+                android:textSize="18dp"
+                android:textStyle="bold"></TextView>
+
+
+
+        </RelativeLayout>
+
         <com.example.filepicker.AllImage.AutoFitRecyclerView
             android:id="@+id/folderRecycler"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@color/black"
-            android:columnWidth="120dp"
+            android:layout_below="@id/actionlayout"
+            android:layout_marginTop="10dp"
             android:clipToPadding="false"
-            android:layout_below="@id/head">
+            android:columnWidth="120dp">
 
             <!--app:fastScrollEnabled="true"
        app:fastScrollHorizontalThumbDrawable="@drawable/thumb_drawable"

@@ -6,7 +6,6 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:padding="10dp"
-    android:layout_marginTop="10dp"
     tools:context=".Activity.Home_Activity">
 
 
@@ -14,7 +13,7 @@
         android:id="@+id/actionlayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="5dp"
+        android:padding="5dp"
         android:orientation="horizontal">
 
         <ImageButton

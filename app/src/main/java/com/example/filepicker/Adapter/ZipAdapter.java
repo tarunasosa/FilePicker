@@ -9,13 +9,10 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.filepicker.Activity.ZipToPdf;
 import com.example.filepicker.Model.ZipModel;
-import com.example.filepicker.Model.txtModel;
 import com.example.filepicker.R;
-import com.example.filepicker.ViewPDF;
 
 import java.util.ArrayList;
 

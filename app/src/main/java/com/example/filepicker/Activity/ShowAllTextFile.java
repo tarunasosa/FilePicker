@@ -3,10 +3,14 @@ package com.example.filepicker.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.util.Log;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
+import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -30,24 +34,45 @@ import java.util.Date;
 import java.util.Iterator;
 
 public class ShowAllTextFile extends AppCompatActivity {
-ArrayList<txtModel> arrtxtData;
-ListView list_txt;
-Context context;
-txtAdapter madapter;
-TextView array_state_txt;
+    ArrayList<txtModel> arrtxtData;
+    ListView list_txt;
+    Context context;
+    ImageButton back_btn;
+    txtAdapter madapter;
+    TextView array_state_txt;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_show_all_txt_file);
-        context=this;
-        list_txt=findViewById(R.id.list_txt);
 
-        array_state_txt=findViewById(R.id.array_state_txt);
+        if (Build.VERSION.SDK_INT >= 21) {
+            Window window = getWindow();
+            window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+            window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+            window.setStatusBarColor(getResources().getColor(R.color.gray));
+
+        }
+
+        context = this;
+        list_txt = findViewById(R.id.list_txt);
+        back_btn = findViewById(R.id.back_btn);
+
+
+        array_state_txt = findViewById(R.id.array_state_txt);
+
+        back_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBackPressed();
+            }
+        });
 
         new LoadApplications().execute();
 
 
     }
+
     public void getAlltxtFile() {
         arrtxtData = new ArrayList<>();
         Iterator<File> fileIterator = FileUtils.iterateFiles(
@@ -80,6 +105,7 @@ TextView array_state_txt;
         Log.d("apksize", "" + arrtxtData.size());
 
     }
+
     class LoadApplications extends AsyncTask<Void, Void, Void> {
 
         private ProgressDialog progress = null;
@@ -107,7 +133,6 @@ TextView array_state_txt;
             super.onPostExecute(aVoid);
             if (arrtxtData.size() > 0) {
                 list_txt.setAdapter(madapter);
-
 
 
             } else {

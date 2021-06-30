@@ -1,6 +1,5 @@
 package com.example.filepicker.Adapter;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
@@ -10,12 +9,10 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.example.filepicker.Model.DocModel;
 import com.example.filepicker.Model.txtModel;
 import com.example.filepicker.R;
-import com.example.filepicker.ViewPDF;
+import com.example.filepicker.Activity.ViewPDF;
 
 import java.util.ArrayList;
 

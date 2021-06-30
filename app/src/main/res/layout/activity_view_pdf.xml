@@ -4,91 +4,79 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ViewPDF">
-
-
-    <com.github.ybq.android.spinkit.SpinKitView xmlns:app="http://schemas.android.com/apk/res-auto"
-        android:id="@+id/spin_kit"
-        style="@style/SpinKitView.Large.Circle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        app:SpinKit_Color="@color/purple_500" />
-
-    <com.pdfview.PDFView
-        android:id="@+id/viewPDF"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" />
-
-
+    android:padding="10dp"
+    tools:context=".Activity.ViewPDF">
 
     <RelativeLayout
-        android:layout_width="wrap_content"
+        android:id="@+id/actionlayout"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="10dp">
+        android:orientation="horizontal"
+        android:padding="5dp">
 
+        <ImageButton
+            android:id="@+id/back_btn"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_alignParentLeft="true"
+            android:background="@drawable/back_btn" />
 
-        <!--Floating action button for add alarm-->
-        <!--Make sure that you are constraining this
-            button to the parent button-->
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/add"
+        <TextView
+            android:id="@+id/changeText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="30dp"
+            android:layout_marginTop="10dp"
+            android:layout_toRightOf="@id/back_btn"
+            android:fontFamily="@font/font_f"
+            android:text="Preview"
+            android:textColor="#666666"
+            android:textSize="18dp"
+            android:textStyle="bold"/>
+
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
-            android:layout_alignParentBottom="true"
-            android:layout_marginEnd="26dp"
-            fab:fabSize="mini"
+            android:layout_centerVertical="true"
+            android:orientation="horizontal">
 
-            fab:srcCompat="@drawable/add_fab" />
+            <ImageButton
+                android:id="@+id/editpdf_btn"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_marginRight="10dp"
+                android:background="@drawable/editpdf_btn" />
 
-        <!--Action name text for the add alarm button-->
-        <!--Make sure that you are constraining this Text to
-            the add Alarm FAB button-->
-        <TextView
-            android:id="@+id/add_text"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_marginRight="20dp"
-            android:layout_marginBottom="30dp"
-            android:layout_toLeftOf="@id/add"
-            android:text="Add"
-            android:textColor="@color/black"
-            android:textSize="20dp"
-            android:textStyle="bold"
-            fab:srcCompat="@drawable/back" />
+            <ImageButton
+                android:id="@+id/addpdf_btn"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_marginLeft="10dp"
+                android:background="@drawable/addpdf_btn" />
+        </LinearLayout>
 
-        <!--Floating action button for add person-->
-        <!--Make sure that you are constraining this
-            button to the add Alarm FAB button-->
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/Edit"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-
-            android:layout_above="@+id/add"
-            android:layout_alignParentEnd="true"
-            android:layout_marginEnd="26dp"
-            android:layout_marginBottom="10dp"
-            fab:fabSize="mini"
-            fab:srcCompat="@drawable/edit_fab" />
-
-        <!--Action name text for the add person button-->
-        <!--Make sure that you are constraining this Text
-            to the add Person FAB button-->
-        <TextView
-            android:id="@+id/edit_txt"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_above="@+id/add"
-            android:layout_marginRight="20dp"
-            android:layout_marginBottom="20dp"
-            android:layout_toLeftOf="@id/Edit"
-            android:text="Edit"
-            android:textColor="@color/black"
-            android:textSize="20dp"
-            android:textStyle="bold"
-            fab:srcCompat="@drawable/back" />
     </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/actionlayout">
+
+        <com.github.ybq.android.spinkit.SpinKitView xmlns:app="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/spin_kit"
+            style="@style/SpinKitView.Large.Circle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            app:SpinKit_Color="@color/purple_500" />
+
+        <com.pdfview.PDFView
+            android:id="@+id/viewPDF"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+    </RelativeLayout>
+
 </RelativeLayout>

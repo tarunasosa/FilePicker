@@ -4,10 +4,14 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.util.Log;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
+import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -17,8 +21,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.filepicker.Adapter.MergePDFAdapter;
 import com.example.filepicker.Model.MergePdfModel;
 import com.example.filepicker.R;
-import com.example.filepicker.ViewPDF;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.filefilter.FileFilterUtils;
@@ -39,18 +41,24 @@ public class ShowAllPdfForMerge extends AppCompatActivity {
     File dir;
     MergePDFAdapter madapter;
     public static ArrayList<String> selectedImage;
-    public static FloatingActionButton mergeOK;
+    public static ImageButton mergeOK;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_show_all_pdf_merge_file);
+
+        if (Build.VERSION.SDK_INT >= 21) {
+            Window window = getWindow();
+            window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+            window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+            window.setStatusBarColor(getResources().getColor(R.color.gray));
+        }
+
         context = this;
         list_doc = findViewById(R.id.list_doc);
         mergeOK = findViewById(R.id.mergeOK);
-        array_state_txt=findViewById(R.id.array_state_txt);
-
-
+        array_state_txt = findViewById(R.id.array_state_txt);
 
 
         new LoadApplications().execute();
@@ -61,7 +69,7 @@ public class ShowAllPdfForMerge extends AppCompatActivity {
         ShowAllPdfForMerge.mergeOK.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                selectedImage=new ArrayList<>();
+                selectedImage = new ArrayList<>();
                 for (int i = 0; i < MergePDFAdapter.al_pdf_merge.size(); i++) {
 
                     if (MergePDFAdapter.al_pdf_merge.get(i).isIschecked() == true) {
@@ -69,17 +77,17 @@ public class ShowAllPdfForMerge extends AppCompatActivity {
                         selectedImage.add(MergePDFAdapter.al_pdf_merge.get(i).isFolder());
                     }
                 }
-                Log.d("arrsize",""+selectedImage.size());
-                if(selectedImage.size()==2){
+                Log.d("arrsize", "" + selectedImage.size());
+                if (selectedImage.size() == 2) {
 
-                    Intent i=new Intent(getApplicationContext(), ViewPDF.class);
+                    Intent i = new Intent(getApplicationContext(), ViewPDF.class);
 //                i.putExtra("getpdfpath",path);
-                    i.putExtra("from","mergepdf");
+                    i.putExtra("from", "mergepdf");
                     i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     startActivity(i);
                     finish();
 
-                }else{
+                } else {
                     Toast.makeText(context, "Plese Select two pdf..", Toast.LENGTH_SHORT).show();
                 }
 
@@ -89,6 +97,7 @@ public class ShowAllPdfForMerge extends AppCompatActivity {
 
 
     }
+
     public void walkdir(File dir) {
         String pdfPattern = ".pdf";
 
@@ -100,15 +109,16 @@ public class ShowAllPdfForMerge extends AppCompatActivity {
                 if (listFile[i].isDirectory()) {
                     walkdir(listFile[i]);
                 } else {
-                    if (listFile[i].getName().endsWith(pdfPattern)){
-                       Log.d("pdfdata",""+listFile[i].getName());
+                    if (listFile[i].getName().endsWith(pdfPattern)) {
+                        Log.d("pdfdata", "" + listFile[i].getName());
 
                     }
                 }
             }
         }
     }
-        public void getAllPdfMergeFile() {
+
+    public void getAllPdfMergeFile() {
         Iterator<File> fileIterator = FileUtils.iterateFiles(
                 Environment.getExternalStorageDirectory(),
                 FileFilterUtils.suffixFileFilter("pdf"),
@@ -150,7 +160,7 @@ public class ShowAllPdfForMerge extends AppCompatActivity {
 
         @Override
         protected Void doInBackground(Void... params) {
-          getAllPdfMergeFile();
+            getAllPdfMergeFile();
 
             if (arrData.size() > 0) {
                 madapter = new MergePDFAdapter(getApplicationContext(), arrData);
@@ -168,8 +178,7 @@ public class ShowAllPdfForMerge extends AppCompatActivity {
             if (arrData.size() > 0) {
                 list_doc.setAdapter(madapter);
 
-            }else
-            {
+            } else {
                 array_state_txt.setVisibility(View.VISIBLE);
             }
             progress.dismiss();

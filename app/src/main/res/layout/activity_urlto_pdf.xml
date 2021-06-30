@@ -4,62 +4,114 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:padding="10dp"
     tools:context=".Activity.URltoPDF">
 
-    <WebView
-        android:id="@+id/myWebView"
+    <RelativeLayout
+        android:id="@+id/actionlayout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:visibility="gone"></WebView>
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="5dp">
 
-    <com.airbnb.lottie.LottieAnimationView
-        android:id="@+id/animation_view"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        <ImageButton
+            android:id="@+id/back_btn"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:background="@drawable/back_btn" />
 
-        app:lottie_autoPlay="true"
+        <TextView
+            android:id="@+id/changeText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="30dp"
+            android:layout_marginTop="10dp"
+            android:layout_toRightOf="@id/back_btn"
+            android:fontFamily="@font/font_f"
+            android:text="URL To PDF"
+            android:textColor="#666666"
+            android:textSize="18dp"
+            android:textStyle="bold"></TextView>
 
-        app:lottie_fileName="lottie.json"
 
-
-        android:visibility="gone"
-        app:lottie_loop="true"
-
-     />
+    </RelativeLayout>
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:layout_below="@id/actionlayout"
+        android:layout_marginTop="20dp"
+        android:padding="5dp">
 
-        <EditText
-            android:id="@+id/txt"
-            android:layout_width="250dp"
-            android:layout_height="100dp"
-            android:layout_centerInParent="true"
-            android:gravity="center"
-            android:hint="https://www.google.com"
-            android:textSize="30dp" />
+        <WebView
+            android:id="@+id/myWebView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="gone"></WebView>
 
-        <Button
-            android:id="@+id/Ok"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:layout_toRightOf="@id/txt"
-            android:text="Ok" />
+        <com.airbnb.lottie.LottieAnimationView
+            android:id="@+id/animation_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="gone"
+            app:lottie_autoPlay="true"
+            app:lottie_fileName="lottie.json"
+            app:lottie_loop="true"
+
+            />
+
+        <RelativeLayout
+            android:id="@+id/mainLayout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <RelativeLayout
+                android:id="@+id/editlayot"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:layout_marginTop="20dp"
+                android:background="@drawable/urledittxt_border_layout">
+
+                <EditText
+                    android:id="@+id/txt"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_centerInParent="true"
+                    android:background="@null"
+                    android:fontFamily="@font/font_f"
+                    android:gravity="center"
+                    android:hint="https://www.google.com"
+                    android:textColor="#666666"
+                    android:textSize="15dp" />
+            </RelativeLayout>
+
+            <LinearLayout
+                android:id="@+id/Ok"
+                android:layout_width="80dp"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/editlayot"
+                android:layout_marginTop="50dp"
+                android:layout_centerHorizontal="true"
+                android:layout_gravity="center_horizontal"
+                android:background="@drawable/done_btn_layout">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/font_f"
+                    android:gravity="center"
+                    android:text="OK"
+                    android:textColor="@color/white"
+                    android:textSize="15dp"
+                    android:textStyle="bold" />
+            </LinearLayout>
+
+
+        </RelativeLayout>
+
+        <!--floating action button to print the webview content-->
+
     </RelativeLayout>
 
-    <!--floating action button to print the webview content-->
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/fab"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentBottom="true"
-        android:layout_gravity="bottom|end"
-        android:layout_margin="20dp"
-
-        android:src="@drawable/ic_launcher_background"
-        android:visibility="gone" />
 </RelativeLayout>
-

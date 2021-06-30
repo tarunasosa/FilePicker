@@ -9,6 +9,7 @@ import android.provider.MediaStore;
 import android.transition.Fade;
 import android.util.Log;
 import android.view.View;
+import android.widget.ImageButton;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
@@ -16,9 +17,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.filepicker.MainActivity;
 import com.example.filepicker.R;
-import com.example.filepicker.ViewPDF;
+import com.example.filepicker.Activity.ViewPDF;
 
 import java.util.ArrayList;
 
@@ -37,6 +37,7 @@ public class ImageDisplay extends AppCompatActivity implements itemClickListener
     ProgressBar load;
     String foldePath;
     TextView folderName;
+    ImageButton back_btn;
     public  static ArrayList<String> selectedImage;
 
 
@@ -46,6 +47,7 @@ public class ImageDisplay extends AppCompatActivity implements itemClickListener
         setContentView(R.layout.activity_image_display);
 
         folderName = findViewById(R.id.foldername);
+        back_btn=findViewById(R.id.back_btn);
         folderName.setText(getIntent().getStringExtra("folderName"));
 
         foldePath = getIntent().getStringExtra("folderPath");
@@ -54,6 +56,13 @@ public class ImageDisplay extends AppCompatActivity implements itemClickListener
 //        imageRecycler.addItemDecoration(new MarginDecoration(this));
 //        imageRecycler.hasFixedSize();
         load = findViewById(R.id.loader);
+
+        back_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBackPressed();
+            }
+        });
 
 
         if (allpictures.isEmpty()) {

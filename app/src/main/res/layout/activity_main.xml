@@ -4,17 +4,16 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_marginTop="10dp"
     android:padding="10dp"
-    tools:context=".MainActivity">
+    tools:context=".Activity.MainActivity">
 
 
     <RelativeLayout
         android:id="@+id/actionlayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="5dp"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:padding="5dp">
 
         <ImageButton
             android:id="@+id/back_btn"
@@ -76,7 +75,7 @@
                     android:layout_gravity="center_horizontal"
                     android:layout_marginTop="10dp"
                     android:fontFamily="@font/font_f"
-                    android:text="Create PDF"
+                    android:text="Pick Image"
                     android:textColor="#666666"
                     android:textSize="15dp"
                     android:textStyle="bold" />
@@ -105,7 +104,7 @@
                     android:layout_gravity="center"
                     android:layout_marginTop="10dp"
                     android:fontFamily="@font/font_f"
-                    android:text="PDF History"
+                    android:text="Pick Text File"
                     android:textColor="#666666"
                     android:textSize="15dp"
                     android:textStyle="bold" />
@@ -135,7 +134,7 @@
                     android:layout_gravity="center"
                     android:layout_marginTop="10dp"
                     android:fontFamily="@font/font_f"
-                    android:text="Merge PDF"
+                    android:text="Pick DOC File"
                     android:textColor="#666666"
                     android:textSize="15dp"
                     android:textStyle="bold" />
@@ -158,14 +157,20 @@
                 android:padding="20dp"
                 tools:ignore="Suspicious0dp">
 
-                <ImageButton
-                    android:id="@+id/urlTopdf"
-                    android:layout_width="wrap_content"
+                <LinearLayout
+                    android:layout_width="150dp"
                     android:layout_height="100dp"
-                    android:layout_gravity="center"
-                    android:background="@drawable/urltopdf_btn"
-                    android:text="Clock"
-                    android:textStyle="bold" />
+                    android:padding="10dp">
+
+                    <ImageButton
+                        android:id="@+id/urlTopdf"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:background="@drawable/urltopdf_btn"
+                        android:text="Clock"
+                        android:textStyle="bold" />
+                </LinearLayout>
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -188,15 +193,20 @@
                 android:padding="20dp"
                 tools:ignore="Suspicious0dp">
 
-                <ImageButton
-                    android:id="@+id/zipTopdf"
-                    android:layout_width="wrap_content"
+                <LinearLayout
+                    android:layout_width="150dp"
                     android:layout_height="100dp"
+                    android:padding="10dp">
 
-                    android:layout_gravity="center"
-                    android:background="@drawable/ziptopdf_btn"
-                    android:text="Clock"
-                    android:textStyle="bold" />
+                    <ImageButton
+                        android:id="@+id/zipTopdf"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:background="@drawable/ziptopdf_btn"
+                        android:text="Clock"
+                        android:textStyle="bold" />
+                </LinearLayout>
 
                 <TextView
 
@@ -205,16 +215,14 @@
                     android:layout_gravity="center"
                     android:layout_marginTop="10dp"
                     android:fontFamily="@font/font_f"
-                    android:text="PDF History"
+                    android:text="ZIP To PDF"
                     android:textColor="#666666"
                     android:textSize="15dp"
                     android:textStyle="bold" />
             </LinearLayout>
 
-
         </LinearLayout>
 
     </RelativeLayout>
-
 
 </RelativeLayout>

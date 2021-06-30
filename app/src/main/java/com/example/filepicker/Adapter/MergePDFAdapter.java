@@ -1,7 +1,6 @@
 package com.example.filepicker.Adapter;
 
 import android.content.Context;
-import android.content.Intent;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,15 +10,9 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.example.filepicker.Activity.ShowAllPdfForMerge;
-import com.example.filepicker.Activity.ShowAllZipFile;
-import com.example.filepicker.AllImage.picture_Adapter;
-import com.example.filepicker.Model.DocModel;
 import com.example.filepicker.Model.MergePdfModel;
 import com.example.filepicker.R;
-import com.example.filepicker.ViewPDF;
 
 import java.util.ArrayList;
 

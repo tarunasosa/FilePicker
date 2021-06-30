@@ -12,6 +12,7 @@ import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import androidx.annotation.RequiresApi;
@@ -29,6 +30,7 @@ public class MainActivity_gallery extends AppCompatActivity implements itemClick
 
     RecyclerView folderRecycler;
     TextView empty;
+    ImageButton back_btn;
     private static final int MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE = 1;
 
 
@@ -37,6 +39,15 @@ public class MainActivity_gallery extends AppCompatActivity implements itemClick
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_g1);
+
+        back_btn=findViewById(R.id.back_btn);
+
+        back_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBackPressed();
+            }
+        });
 
         if(ContextCompat.checkSelfPermission(MainActivity_gallery.this,
                 Manifest.permission.READ_EXTERNAL_STORAGE)

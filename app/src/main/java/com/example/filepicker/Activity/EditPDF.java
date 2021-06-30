@@ -1,36 +1,32 @@
-package com.example.filepicker;
+package com.example.filepicker.Activity;
 
-import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.Toast;
 
+import com.example.filepicker.R;
 import com.itextpdf.text.Document;
 import com.itextpdf.text.Paragraph;
 import com.itextpdf.text.pdf.PdfReader;
 import com.itextpdf.text.pdf.PdfWriter;
 import com.itextpdf.text.pdf.parser.PdfTextExtractor;
 
-import java.io.BufferedReader;
-import java.io.File;
 import java.io.FileOutputStream;
-import java.io.FileReader;
-import java.io.IOException;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Locale;
 
 public class EditPDF extends AppCompatActivity {
     EditText edit_text;
     String editPDFpath;
-    Button savebtn;
+    ImageButton savebtn;
     String Filename;
 
     @Override
@@ -38,8 +34,14 @@ public class EditPDF extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_pdf);
 
-        edit_text = findViewById(R.id.edit_text);
+        if (Build.VERSION.SDK_INT >= 21) {
+            Window window = getWindow();
+            window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+            window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+            window.setStatusBarColor(getResources().getColor(R.color.gray));
+        }
 
+        edit_text = findViewById(R.id.edit_text);
         savebtn = findViewById(R.id.savebtn);
         editPDFpath = getIntent().getStringExtra("editPDFpath");
 
@@ -60,7 +62,7 @@ public class EditPDF extends AppCompatActivity {
                     public void onFinish() {
                         Intent i = new Intent(getApplicationContext(), ViewPDF.class);
                         i.putExtra("getpdfpath", editPDFpath);
-                        Log.d("pathShow",""+editPDFpath);
+                        Log.d("pathShow", "" + editPDFpath);
                         i.putExtra("from", "edited");
                         startActivity(i);
                         finish();
@@ -124,9 +126,9 @@ public class EditPDF extends AppCompatActivity {
             doc.addAuthor("Text To Pdf");
             doc.add(new Paragraph(edit_text.getText().toString()));
             doc.close();
-            Toast.makeText(EditPDF.this, editPDFpath + ".pdf\nis saved to\n" , Toast.LENGTH_SHORT).show();
+            Toast.makeText(EditPDF.this, editPDFpath + ".pdf\nis saved to\n", Toast.LENGTH_SHORT).show();
 //            Log.d("path", "" + file.getPath());
-            Log.d("pathShow",""+editPDFpath);
+            Log.d("pathShow", "" + editPDFpath);
         } catch (Exception e) {
             Toast.makeText(EditPDF.this, e.getMessage(), Toast.LENGTH_SHORT).show();
 

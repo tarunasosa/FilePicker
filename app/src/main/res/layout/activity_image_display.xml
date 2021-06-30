@@ -4,36 +4,54 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:paddingTop="10dp"
     tools:context="AllImage.ImageDisplay"
     android:id="@+id/displayContainer">
+
+
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <androidx.cardview.widget.CardView
+        <RelativeLayout
             android:id="@+id/head"
             android:layout_width="match_parent"
-            android:layout_height="50dp"
-            app:cardBackgroundColor="@color/purple_200">
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:paddingLeft="10dp"
+            android:orientation="horizontal">
+
+            <ImageButton
+                android:id="@+id/back_btn"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_alignParentLeft="true"
+                android:background="@drawable/back_btn" />
 
             <TextView
                 android:id="@+id/foldername"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center|start"
-                android:text="folderName"
-                android:textColor="@color/white"
-                android:textSize="18sp"
-                android:textStyle="bold"
-                android:layout_marginLeft="10dp"
-                android:layout_marginStart="10dp" />
+                android:layout_centerInParent="true"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="10dp"
+                android:fontFamily="@font/font_f"
+                android:text="Folder Name"
+                android:textColor="#666666"
+                android:textSize="18dp"
+                android:textStyle="bold"></TextView>
 
-        </androidx.cardview.widget.CardView>
+
+
+        </RelativeLayout>
+
+
 
         <com.example.filepicker.AllImage.AutoFitRecyclerView
             android:layout_below="@id/head"
             android:id="@+id/recycler"
+            android:layout_marginTop="10dp"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@color/white"
@@ -47,15 +65,34 @@
             app:fastScrollVerticalTrackDrawable="@drawable/line_drawable"-->
 
         </com.example.filepicker.AllImage.AutoFitRecyclerView>
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/sd_card_video"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentBottom="true"
-            android:layout_margin="8dp"
-            android:elevation="5dp"
-            android:onClick="sd_card_video" />
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:background="@color/white"
+            android:layout_alignParentBottom="true">
+
+
+            <LinearLayout
+                android:layout_centerInParent="true"
+                android:id="@+id/OkLayout"
+                android:layout_width="80dp"
+                android:onClick="sd_card_video"
+                android:background="@drawable/done_btn_layout"
+                android:layout_gravity="center_horizontal"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="Done"
+                    android:fontFamily="@font/font_f"
+                    android:textColor="@color/white"
+                    android:textSize="15dp"
+                    android:textStyle="bold" />
+            </LinearLayout>
+        </RelativeLayout>
     </RelativeLayout>
 
 

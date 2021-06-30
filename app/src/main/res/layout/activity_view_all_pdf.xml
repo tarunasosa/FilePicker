@@ -4,11 +4,48 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:padding="10dp"
     tools:context=".Activity.ViewAllPDF">
+    <RelativeLayout
+        android:id="@+id/actionlayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="5dp">
+
+        <ImageButton
+            android:id="@+id/back_btn"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:background="@drawable/back_btn" />
+
+        <TextView
+            android:id="@+id/changeText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="30dp"
+            android:layout_marginTop="10dp"
+            android:layout_toRightOf="@id/back_btn"
+            android:fontFamily="@font/font_f"
+            android:text="Preview"
+            android:textColor="#666666"
+            android:textSize="18dp"
+            android:textStyle="bold"></TextView>
+
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/actionlayout">
 
     <com.pdfview.PDFView
         android:id="@+id/viewAllPDF"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
+
+    </RelativeLayout>
 </RelativeLayout>

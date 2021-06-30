@@ -2,24 +2,19 @@ package com.example.filepicker.Adapter;
 
 import android.content.Context;
 import android.content.Intent;
-import android.net.Uri;
-import android.os.Environment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.filepicker.Model.DocModel;
 import com.example.filepicker.R;
-import com.example.filepicker.ViewPDF;
+import com.example.filepicker.Activity.ViewPDF;
 
-import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 
 

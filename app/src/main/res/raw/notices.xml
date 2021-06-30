@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<notices>
+
+    <notice>
+        <name>Google Play Services</name>
+        <url>https://developer.android.com/google/play-services/index.html</url>
+        <copyright>© 2014 Google</copyright>
+        <license>Creative Commons Attribution-NoDerivs 3.0 Unported</license>
+    </notice>
+
+    <notice>
+        <name>Licenses Dialog</name>
+        <url>https://github.com/PSDev/LicensesDialog</url>
+        <copyright>© 2013 Philip Schiffer</copyright>
+        <license>Apache Software License 2.0</license>
+    </notice>
+
+    <notice>
+        <name>Commons IO library</name>
+        <url>https://github.com/carlspring/commons-io</url>
+        <copyright>© 2006-2021 MvnRepository</copyright>
+        <license>Apache Software License 2.0</license>
+    </notice>
+
+    <notice>
+        <name>itextpdf</name>
+        <url>https://mvnrepository.com/artifact/com.itextpdf/itextpdf/5.0.6</url>
+        <copyright>© 2006-2021 MvnRepository.</copyright>
+    </notice>
+
+    <notice>
+        <name>PDF Viewer</name>
+        <url>https://github.com/Dmitry-Borodin/pdfview-android</url>
+        <copyright>© 2006-2021 MvnRepository</copyright>
+        <license>Apache Software License 2.0</license>
+    </notice>
+
+    <notice>
+        <name>PDF Merge</name>
+        <url>https://github.com/TomRoush/PdfBox-Android</url>
+        <copyright>© 2006-2021 MvnRepository</copyright>
+        <license>Apache Software License 2.0</license>
+    </notice>
+
+    <notice>
+        <name>Doc to PDF Conversion</name>
+        <url>https://github.com/usman-aziz/Word-to-PDF-Converter-Android-App</url>
+        <license>Apache Software License 2.0</license>
+    </notice>
+
+    <notice>
+        <name>URl to Image Conversion</name>
+        <url>https://github.com/bumptech/glide</url>
+        <copyright>© 2006-2021 Sam Judd </copyright>
+        <license>Apache Software License 2.0</license>
+    </notice>
+
+    <notice>
+        <name>ProgressBar</name>
+        <url>https://github.com/ybq/Android-SpinKit</url>
+        <license>Apache Software License 2.0</license>
+    </notice>
+
+    <notice>
+        <name>LottieView</name>
+        <url>https://github.com/airbnb/lottie/blob/master/android.md</url>
+        <license>Apache Software License 2.0</license>
+    </notice>
+</notices>

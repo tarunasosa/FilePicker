@@ -5,10 +5,14 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.util.Log;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
+import android.widget.ImageButton;
 import android.widget.ProgressBar;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
@@ -48,7 +52,7 @@ public class ZipToPdf extends AppCompatActivity {
     String radio_StateMode1;
     File filepath, getzipfilepath;
     ArrayList<String> pdfpath;
-String viewpdfpath;
+    String viewpdfpath;
     String filename;
     String getzippath;
     String Dialg;
@@ -56,18 +60,35 @@ String viewpdfpath;
     ArrayList<String> deleteCreatedPDF;
     ArrayList<String> deleteCreatedziptofile;
     String txtFileData;
+    ImageButton back_btn;
     ProgressBar progressBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_zip_to_pdf);
+
+        if (Build.VERSION.SDK_INT >= 21) {
+            Window window = getWindow();
+            window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+            window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+            window.setStatusBarColor(getResources().getColor(R.color.gray));
+        }
+
         pdfView = findViewById(R.id.pdfView);
-        progressBar=findViewById(R.id.spin_kit);
+        progressBar = findViewById(R.id.spin_kit);
+        back_btn = findViewById(R.id.back_btn);
         editor = getSharedPreferences("mypref", MODE_PRIVATE).edit();
 
         deleteCreatedPDF = new ArrayList<>();
         deleteCreatedziptofile = new ArrayList<>();
+
+        back_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBackPressed();
+            }
+        });
 
         File file1 = getExternalFilesDir("PDFtoANYFormat");
         String relativePath = file1.getAbsolutePath() + File.separator + "showPDF";
@@ -81,11 +102,13 @@ String viewpdfpath;
         setDialog();
 
 
+
+
     }
 
     public void setDialog() {
         AlertDialog.Builder builder
-                = new AlertDialog.Builder(this);
+                = new AlertDialog.Builder(this, R.style.CustomAlertDialog);
         // set the custom layout
         final View customLayout
                 = getLayoutInflater()
@@ -97,24 +120,15 @@ String viewpdfpath;
         modeGroup1 = customLayout.findViewById(R.id.modeGroup1);
 
 
-        getradio();
+
         setradio();
 
-        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.dismiss();
-                Dialg = "dismiss";
-
-                init();
-
-            }
-        });
 
         customLayout.setMinimumWidth(100);
         builder.setView(customLayout);
         dialog
                 = builder.create();
+        dialog.setCancelable(false);
         dialog.show();
 
 
@@ -131,7 +145,7 @@ String viewpdfpath;
         Log.d("array", "" + deleteCreatedPDF);
 
         SharedPreferences prefs1 = getSharedPreferences("mypref", MODE_PRIVATE);
-        radio_StateMode1 = prefs1.getString("modeGroup1", "merge");
+        radio_StateMode1 = prefs1.getString("modeGroup1", "cvb");
         Log.d("radioState", "" + radio_StateMode1);
 
 
@@ -158,6 +172,7 @@ String viewpdfpath;
                     }
 
                 }
+
                 if (radio_StateMode1.equals("merge")) {
                     try {
                         downloadAndCombinePDFs();
@@ -168,7 +183,7 @@ String viewpdfpath;
                             }
 
                             public void onFinish() {
-                                Log.d("filepathhh",""+viewpdfpath);
+                                Log.d("filepathhh", "" + viewpdfpath);
                                 pdfView.fromFile(viewpdfpath).show();
 
                                 progressBar.setVisibility(View.GONE);
@@ -208,6 +223,29 @@ String viewpdfpath;
                         e.printStackTrace();
                     }
                 }
+                else {
+
+//                        downloadAndCombinePDFs();
+
+                        Log.d("deleteCreatedPDFSize", "" + deleteCreatedPDF.get(1).toString());
+                        new CountDownTimer(3000, 1000) {
+                            public void onTick(long millisUntilFinished) {
+                            }
+
+                            public void onFinish() {
+                                Log.d("filepathhh", "" + viewpdfpath);
+
+                                pdfView.fromFile(deleteCreatedPDF.get(deleteCreatedPDF.size()-1).toString()).show();
+
+                                progressBar.setVisibility(View.GONE);
+
+
+                            }
+
+                        }.start();
+
+
+                }
             }
 
         }.start();
@@ -228,17 +266,47 @@ String viewpdfpath;
 
                     editor.putString("modeGroup1", "merge");
                     editor.apply();
+                    getradio();
+                    dialog.dismiss();
+                    init();
+//                    Toast.makeText(ZipToPdf.this, "" + radio_StateMode1, Toast.LENGTH_SHORT).show();
 
                 }
                 if (checkedId == R.id.Nmerge) {
 
                     editor.putString("modeGroup1", "Nmerge");
                     editor.apply();
+                    getradio();
+                    dialog.dismiss();
+                    init();
+//                    Toast.makeText(ZipToPdf.this, "" + radio_StateMode1, Toast.LENGTH_SHORT).show();
 
                 }
 
             }
         });
+
+//        rbmerge.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                editor.putString("modeGroup1", "merge");
+//                editor.apply();
+//                getradio();
+//                dialog.dismiss();
+//                init();
+//            }
+//        });
+//
+//        rbNmerge.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                editor.putString("modeGroup1", "Nmerge");
+//                editor.apply();
+//                getradio();
+//                dialog.dismiss();
+//                init();
+//            }
+//        });
 
 
     }
@@ -246,7 +314,7 @@ String viewpdfpath;
     public void getradio() {
 
         SharedPreferences prefs1 = getSharedPreferences("mypref", MODE_PRIVATE);
-        radio_StateMode1 = prefs1.getString("modeGroup1", "merge");
+        radio_StateMode1 = prefs1.getString("modeGroup1", "cvb");
 
 
         if (radio_StateMode1.equals("merge")) {
@@ -381,7 +449,7 @@ String viewpdfpath;
         filepath = null;
         filepath = new File(file.getPath() + File.separator +
                 "/" + filename + ".pdf");
-        viewpdfpath=filepath.toString();
+        viewpdfpath = filepath.toString();
 
         final FileOutputStream fileOutputStream = new FileOutputStream(filepath);
         try {

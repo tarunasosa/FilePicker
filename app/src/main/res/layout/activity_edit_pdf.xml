@@ -4,42 +4,66 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".EditPDF">
-    <EditText
-        android:id="@+id/edit_text"
-        android:inputType="textMultiLine"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+    android:padding="10dp"
+    tools:context=".Activity.EditPDF">
+
     <RelativeLayout
         android:id="@+id/actionlayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:paddingLeft="10dp"
-        android:paddingRight="10dp">
+        android:layout_marginTop="5dp"
+        android:orientation="horizontal"
+        android:padding="10dp">
 
+        <ImageButton
+            android:id="@+id/back_btn"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:background="@drawable/back_btn" />
 
-        <LinearLayout
-
+        <TextView
+            android:id="@+id/changeText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
             android:layout_marginLeft="30dp"
+            android:layout_marginTop="10dp"
+            android:layout_toRightOf="@id/back_btn"
+            android:fontFamily="@font/font_f"
+            android:text="Edit"
+            android:textColor="#666666"
+            android:textSize="18dp"
+            android:textStyle="bold"></TextView>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
             android:orientation="horizontal">
 
 
-
-
-
+            <ImageButton
+                android:id="@+id/savebtn"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:background="@drawable/savepdf_btn" />
         </LinearLayout>
 
-        <Button
-            android:id="@+id/savebtn"
-            android:layout_alignParentRight="true"
-            android:layout_width="80dp"
-            android:layout_height="40dp"
-            android:text="Save"
-            android:background="@drawable/dot_layout2"
-            />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/actionlayout">
+
+        <EditText
+            android:id="@+id/edit_text"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@null"
+            android:inputType="textMultiLine" />
+
 
     </RelativeLayout>
 

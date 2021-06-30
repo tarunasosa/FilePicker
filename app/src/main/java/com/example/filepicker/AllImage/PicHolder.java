@@ -6,6 +6,7 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
 import androidx.annotation.NonNull;
+import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.filepicker.R;
@@ -20,7 +21,7 @@ import com.example.filepicker.R;
 public class PicHolder extends RecyclerView.ViewHolder{
 
     public static ImageView picture,select_img;
-    public static RelativeLayout picture_frame;
+    public static CardView picture_frame;
     public static CheckBox select_image;
 
 

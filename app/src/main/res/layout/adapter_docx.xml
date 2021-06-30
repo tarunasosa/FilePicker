@@ -4,88 +4,60 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="#F3F8FE"
     android:orientation="horizontal"
-    android:paddingLeft="20dp"
-    android:paddingTop="10dp"
-    android:paddingRight="20dp">
+    android:padding="5dp">
 
 
     <RelativeLayout
+        android:id="@+id/relative_main"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-      >
+        android:background="@drawable/urledittxt_border_layout">
 
-
-        <androidx.cardview.widget.CardView
-            android:id="@+id/cardview"
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:clickable="true"
-            android:elevation="16dp"
-            android:focusable="true"
-            android:foreground="?android:attr/selectableItemBackground"
-            app:cardCornerRadius="20dp"
-            >
+            android:padding="15dp">
+
+            <LinearLayout
+                android:id="@+id/layout1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true">
+
+                <ImageView
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:background="@drawable/doc" />
+            </LinearLayout>
+
 
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="20dp"
+                android:layout_toRightOf="@id/layout1"
                 android:orientation="vertical">
-                <RelativeLayout
-                    android:id="@+id/relative_main"
-                    android:layout_width="match_parent"
+
+
+                <TextView
+                    android:id="@+id/docname"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:padding="10dp">
+                    android:fontFamily="@font/font_f"
+                    android:text="name1"
+                    android:textColor="#666666"
+                    android:textSize="15dp"
+                    android:textStyle="bold" />
 
-                    <LinearLayout
-                        android:id="@+id/layout1"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="5dp"
-                        android:layout_centerVertical="true">
-
-                        <ImageView
-                            android:id="@+id/recent_update_img"
-                            android:layout_width="50dp"
-                            android:layout_height="50dp"
-                            android:background="@drawable/docx" />
-                    </LinearLayout>
-
-
-                    <LinearLayout
-                        android:id="@+id/liner1"
-                        android:layout_toRightOf="@id/layout1"
-                        android:layout_width="wrap_content"
-                        android:layout_marginLeft="30dp"
-                        android:layout_centerVertical="true"
-                        android:layout_height="wrap_content"
-                        android:orientation="vertical">
-
-
-
-                            <TextView
-                                android:id="@+id/docname"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:textSize="15dp"
-                                android:textStyle="bold"
-                                android:text="name1"
-                                android:textColor="@color/black"
-                                />
-
-                        </LinearLayout>
-
-
-
-
-
-                </RelativeLayout>
 
             </LinearLayout>
-        </androidx.cardview.widget.CardView>
 
+
+        </RelativeLayout>
 
 
     </RelativeLayout>
+
 </RelativeLayout>

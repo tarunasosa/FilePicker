@@ -6,57 +6,71 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.print.PrintAttributes;
 import android.print.PrintDocumentAdapter;
 import android.print.PrintManager;
-import android.provider.Settings;
 import android.util.Log;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
-import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.airbnb.lottie.LottieAnimationView;
-import com.example.filepicker.AllImage.ImageDisplay;
 import com.example.filepicker.AllImage.imageFolder;
 import com.example.filepicker.R;
-import com.example.filepicker.ViewPDF;
-import com.itextpdf.text.Document;
-import com.itextpdf.text.Image;
-import com.itextpdf.text.pdf.PdfWriter;
 
 import java.io.File;
-import java.io.FileOutputStream;
-import java.text.SimpleDateFormat;
-import java.util.Locale;
 
 public class URltoPDF extends AppCompatActivity {
 
     private WebView myWebView;
     EditText txt;
-    Button Ok;
+    LinearLayout     Ok;
     private String storeFilename;
     File storeFilepathNname;
     imageFolder storeFilePath;
     String url;
+    ImageButton back_btn;
+    RelativeLayout mainLayout;
     LottieAnimationView animation_view;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_urlto_pdf);
+
+        if (Build.VERSION.SDK_INT >= 21) {
+            Window window = getWindow();
+            window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+            window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+            window.setStatusBarColor(getResources().getColor(R.color.gray));
+
+        }
+
         myWebView = findViewById(R.id.myWebView);
         txt = findViewById(R.id.txt);
         Ok = findViewById(R.id.Ok);
+        back_btn=findViewById(R.id.back_btn);
         animation_view = findViewById(R.id.animation_view);
+        mainLayout=findViewById(R.id.mainLayout);
 
         Toast.makeText(this, "please enter url and press ok", Toast.LENGTH_SHORT).show();
+
+        back_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBackPressed();
+            }
+        });
 
         //add webview client to handle event of loading
         myWebView.setWebViewClient(new WebViewClient() {
@@ -100,7 +114,13 @@ public class URltoPDF extends AppCompatActivity {
 
 //                    myWebView.loadUrl("https://www.google.com");
 
-                    dialog(v);
+                    if(url.equals("")){
+                        Toast.makeText(URltoPDF.this, "please Enter url", Toast.LENGTH_SHORT).show();
+                    }else{
+                        dialog(v);
+                    }
+
+
 
                 }
             }
@@ -132,60 +152,6 @@ public class URltoPDF extends AppCompatActivity {
         createWebPrintJob(myWebView);
     }
 
-    public void createPDF() {
-
-
-        Document doc = new Document();
-        storeFilename = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(System.currentTimeMillis());
-        //String filepath = Environment.getExternalStorageDirectory() + "/" + filename + ".pdf";
-        storeFilepathNname = null;
-        storeFilepathNname = new File(storeFilePath.getPath() + File.separator +
-                "/" + storeFilename + ".pdf");
-        Log.e("filepath", "" + storeFilepathNname);
-        try {
-            PdfWriter.getInstance(doc, new FileOutputStream(storeFilepathNname));
-            doc.open();
-            String mText = "showData.getText().toString()";
-            doc.addAuthor("Text To Pdf");
-            for (int i = 0; i < ImageDisplay.selectedImage.size(); i++) {
-                Image image = Image.getInstance(ImageDisplay.selectedImage.get(i));
-
-                float documentWidth = doc.getPageSize().getWidth()
-                        - doc.leftMargin() - doc.rightMargin();
-                float documentHeight = doc.getPageSize().getHeight()
-                        - doc.topMargin() - doc.bottomMargin();
-                image.scaleToFit(documentWidth, documentHeight);
-
-//                Log.e("Document - Image  = Height", document.getPageSize().getHeight()+" - "+image.getScaledHeight());
-
-                float leftMargin = doc.getPageSize().getWidth() - image.getScaledWidth();
-                float lMargin = leftMargin / 2;
-
-                float topMargin = doc.getPageSize().getHeight() - image.getScaledHeight();
-                float tMargin = topMargin / 2;
-
-                image.setAbsolutePosition(lMargin, tMargin);
-
-                image.setAlignment(Image.ALIGN_CENTER);
-                doc.add(image);
-                doc.newPage();
-
-
-            }
-
-            doc.close();
-
-
-        } catch (Exception e) {
-            Toast.makeText(URltoPDF.this, e.getMessage(), Toast.LENGTH_SHORT).show();
-
-        }
-//        try {
-//            downloadAndCombinePDFs();
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-    }
 
     public void dialog(View v) {
 
@@ -202,8 +168,8 @@ public class URltoPDF extends AppCompatActivity {
                             public void onTick(long millisUntilFinished) {
                                 myWebView.loadUrl(url);
                                 animation_view.setVisibility(View.VISIBLE);
-                                txt.setVisibility(View.GONE);
-                                Ok.setVisibility(View.GONE);
+                                mainLayout.setVisibility(View.GONE);
+
 
                             }
 
@@ -228,4 +194,33 @@ public class URltoPDF extends AppCompatActivity {
 
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        Log.d("callResume","call...");
+
+        mainLayout.setVisibility(View.VISIBLE);
+
+//        Ok.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                url = txt.getText().toString();
+//                if (url == "") {
+//                    Toast.makeText(getApplicationContext(), "Enter url", Toast.LENGTH_SHORT).show();
+//                } else {
+//
+////                    myWebView.loadUrl("https://www.google.com");
+//
+//                    if(url.equals("")){
+//                        Toast.makeText(URltoPDF.this, "please Enter url", Toast.LENGTH_SHORT).show();
+//                    }else{
+//                        dialog(v);
+//                    }
+//
+//
+//
+//                }
+//            }
+//        });
+    }
 }
