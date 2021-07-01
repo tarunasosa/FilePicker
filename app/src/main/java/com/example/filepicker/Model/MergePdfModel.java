@@ -15,6 +15,7 @@ public class MergePdfModel {
         this.name = name;
         this.folder = folder;
         this.date = date;
+
     }
 
     public String getName() {

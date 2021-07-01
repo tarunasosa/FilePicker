@@ -78,7 +78,7 @@ public class ShowAllPdfForMerge extends AppCompatActivity {
                     }
                 }
                 Log.d("arrsize", "" + selectedImage.size());
-                if (selectedImage.size() == 2) {
+                if (selectedImage.size() >= 2) {
 
                     Intent i = new Intent(getApplicationContext(), ViewPDF.class);
 //                i.putExtra("getpdfpath",path);

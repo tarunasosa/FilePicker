@@ -48,6 +48,7 @@
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/nnf_provider_paths" />
         </provider>
+
         <provider
             android:name="androidx.core.content.FileProvider"
             android:authorities="com.example.filepicker"

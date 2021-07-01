@@ -33,6 +33,7 @@ import com.example.filepicker.R;
 import com.itextpdf.text.Document;
 import com.itextpdf.text.Image;
 import com.itextpdf.text.Paragraph;
+import com.itextpdf.text.pdf.PdfBoolean;
 import com.itextpdf.text.pdf.PdfWriter;
 import com.pdfview.PDFView;
 
@@ -127,7 +128,6 @@ public class ViewPDF extends AppCompatActivity {
 //        pdfpathAry.add(getpdfpath);
 
         if (from.equals("txt")) {
-
 
             ReadTextFromTextFile(getpdfpath);
             TextToPdf();
@@ -262,7 +262,7 @@ public class ViewPDF extends AppCompatActivity {
             Log.d("jndjmn ", "" + pdfpathAry.toString());
 
 
-            new CountDownTimer(3000, 1000) {
+            new CountDownTimer(30000, 1000) {
 
                 public void onTick(long millisUntilFinished) {
 
