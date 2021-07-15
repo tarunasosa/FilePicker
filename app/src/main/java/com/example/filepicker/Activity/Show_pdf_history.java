@@ -23,7 +23,6 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.filepicker.Adapter.DOCXAdapter;
 import com.example.filepicker.Adapter.PDFhistoryAdapter;
 import com.example.filepicker.R;
 

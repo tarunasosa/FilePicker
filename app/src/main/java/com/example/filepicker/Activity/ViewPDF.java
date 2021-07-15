@@ -49,6 +49,7 @@ import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Locale;
@@ -78,6 +79,7 @@ public class ViewPDF extends AppCompatActivity {
     private int TASK_ID = 1;
     private static final int PICK_PDF_FILE = 2;
      Uri document;
+    private static final int PICK_Txt_FILE = 3;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -164,12 +166,14 @@ public class ViewPDF extends AppCompatActivity {
             }
 
             Log.d("pdfpathAry", "" + pdfpathAry.size());
-        } else if (from.equals("edited")) {
+        }
+        else if (from.equals("edited")) {
             storeFilepathNname = new File(getpdfpath);
             viewPDF.fromFile(getpdfpath).show();
             pdfpathAry.add(String.valueOf(storeFilepathNname));
 
-        } else if (from.equals("docx")) {
+        }
+        else if (from.equals("docx")) {
 
 
             fab_edit.setVisibility(View.GONE);
@@ -212,7 +216,8 @@ public class ViewPDF extends AppCompatActivity {
                 progressBar.setVisibility(View.GONE);
             }
 
-        } else if (from.equals("image")) {
+        }
+        else if (from.equals("image")) {
             changeText.setText("Preview Image To PDF");
             fab_edit.setVisibility(View.GONE);
 
@@ -252,30 +257,30 @@ public class ViewPDF extends AppCompatActivity {
             }
 
             Log.d("array", "" + pdfpathAry);
-        } else if (from.equals("mergepdf")) {
+        }
+        else if (from.equals("mergepdf")) {
             fab_edit.setVisibility(View.GONE);
             fab_add.setVisibility(View.GONE);
 
 
-            pdfpathAry = ShowAllPdfForMerge.selectedImage;
-            Toast.makeText(this, "" + pdfpathAry.toString(), Toast.LENGTH_SHORT).show();
-            Log.d("jndjmn ", "" + pdfpathAry.toString());
+//            pdfpathAry = ShowAllPdfForMerge.selectedImage;
+//            Toast.makeText(this, "" + pdfpathAry.toString(), Toast.LENGTH_SHORT).show();
+//            Log.d("jndjmn ", "" + pdfpathAry.toString());
 
 
-            new CountDownTimer(30000, 1000) {
+            new CountDownTimer(3000, 1000) {
 
                 public void onTick(long millisUntilFinished) {
-
-                    //here you can have your logic to set text to edittext
-                }
-
-                public void onFinish() {
                     try {
-                        downloadAndCombinePDFs();
+                        forOnlyMergePDFs();
                         storeFilepathNname = mergepdfpath;
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
+                }
+
+                public void onFinish() {
+
                     viewPDF.fromFile(storeFilepathNname).show();
                     progressBar.setVisibility(View.GONE);
 
@@ -374,7 +379,7 @@ public class ViewPDF extends AppCompatActivity {
         PDFMergerUtility ut = new PDFMergerUtility();
 
         for (int i = 0; i < pdfpathAry.size(); i++) {
-
+//            final InputStream in=getContentResolver().openInputStream(Uri.parse(pdfpathAry.get(i)));
             ut.addSource(new File(pdfpathAry.get(i)));
 
         }
@@ -385,8 +390,10 @@ public class ViewPDF extends AppCompatActivity {
         mergepdfpath = null;
         mergepdfpath = new File(storeFilePath.getPath() + File.separator +
                 "/" + filename + ".pdf");
+        Log.d("mergecall","cal..");
 
         final FileOutputStream fileOutputStream = new FileOutputStream(mergepdfpath);
+//        final InputStream in=getContentResolver().openInputStream(Uri.parse(mergepdfpath));
         try {
             ut.setDestinationStream(fileOutputStream);
             ut.mergeDocuments(MemoryUsageSetting.setupTempFileOnly());
@@ -414,7 +421,8 @@ public class ViewPDF extends AppCompatActivity {
         StringBuilder text = new StringBuilder();
 
         try {
-            BufferedReader br = new BufferedReader(new FileReader(file));
+            InputStream in=getContentResolver().openInputStream(Uri.parse(txtpath));
+            BufferedReader br = new BufferedReader(new InputStreamReader(in));
             String line;
 
             while (true) {
@@ -471,9 +479,15 @@ public class ViewPDF extends AppCompatActivity {
 
                 if ((from.equals("txt")) || (from.equals("edited"))) {
 
-                    Intent i = new Intent(getApplicationContext(), ShowAllTextFile.class);
-                    startActivity(i);
-                    finish();
+                    Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
+                    intent.addCategory(Intent.CATEGORY_OPENABLE);
+                    intent.setType("*/*");
+                    intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+                    startActivityForResult(intent, PICK_Txt_FILE);
+
+//                    Intent i = new Intent(getApplicationContext(), ShowAllTextFile.class);
+//                    startActivity(i);
+//                    finish();
 
                 } else if (from.equals("docx")) {
 //                    Intent i = new Intent(getApplicationContext(), ShowAllDocFile.class);
@@ -512,18 +526,29 @@ public class ViewPDF extends AppCompatActivity {
 
         if (resultCode == Activity.RESULT_OK) {
             if (intent != null) {
-                document = intent.getData();
-                Log.d("path2", "" + document);
+                switch (requestCode){
+                    case PICK_PDF_FILE:
+                        document = intent.getData();
+                        Log.d("path2", "" + document);
 
 
-                Intent i = new Intent(getApplicationContext(), ViewPDF.class);
-                i.putExtra("getpdfpath", String.valueOf(document));
-                i.putExtra("from", "docx");
-//                i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                startActivity(i);
-                finish();
-//                Toast.makeText(getApplicationContext(), "" + document, Toast.LENGTH_SHORT).show();
-                // open the selected document into an Input stream
+                        Intent i = new Intent(getApplicationContext(), ViewPDF.class);
+                        i.putExtra("getpdfpath", String.valueOf(document));
+                        i.putExtra("from", "docx");
+                        startActivity(i);
+                        finish();
+                        break;
+                    case PICK_Txt_FILE:
+                        String path=intent.getData().toString();
+                        i=new Intent(getApplicationContext(), ViewPDF.class);
+                        i.putExtra("getpdfpath",path);
+                        i.putExtra("from","txt");
+                        startActivity(i);
+                        finish();
+                        break;
+                }
+
+
 
             }
         }
@@ -591,6 +616,42 @@ public class ViewPDF extends AppCompatActivity {
                 }
             }
         }
+    }
+
+    private void forOnlyMergePDFs() throws IOException {
+        PDFMergerUtility ut = new PDFMergerUtility();
+
+        for (int i = 0; i < Home_Activity.mergepdflist.size(); i++) {
+
+            final InputStream in=getContentResolver().openInputStream(Uri.parse(Home_Activity.mergepdflist.get(i)));
+            ut.addSource(in);
+        }
+
+
+
+        String filename = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(System.currentTimeMillis());
+        //String filepath = Environment.getExternalStorageDirectory() + "/" + filename + ".pdf";
+        mergepdfpath = null;
+        mergepdfpath = new File(storeFilePath.getPath() + File.separator +
+                "/" + filename + ".pdf");
+        Log.d("mergecall","cal..");
+
+        final FileOutputStream fileOutputStream = new FileOutputStream(mergepdfpath);
+//        final InputStream in=getContentResolver().openInputStream(Uri.parse(mergepdfpath));
+        try {
+            ut.setDestinationStream(fileOutputStream);
+            ut.mergeDocuments(MemoryUsageSetting.setupTempFileOnly());
+            Toast.makeText(this, "Done...", Toast.LENGTH_SHORT).show();
+
+        } finally {
+            fileOutputStream.close();
+        }
+
+        Log.d("data", "" + mergepdfpath);
+
+
+
+
     }
 
 

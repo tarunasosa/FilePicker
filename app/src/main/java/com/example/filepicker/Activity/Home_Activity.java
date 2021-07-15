@@ -1,6 +1,7 @@
 package com.example.filepicker.Activity;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
@@ -22,6 +23,7 @@ import android.widget.Toast;
 
 import com.example.filepicker.R;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -33,20 +35,17 @@ import static android.os.Build.VERSION.SDK_INT;
 
 public class Home_Activity extends AppCompatActivity {
     ImageButton createPDF, PDFhistory, mergePDF;
-    boolean hasStoragePermission;
     ImageButton info_btn;
-    final int READ_WRITE_HOME = 1001;
-    public static final int merge_REQUEST_CODE = 400;
 
 
-    public static ArrayList<String> mergepdflist;
+    public static ArrayList<String> mergepdflist = new ArrayList<>();
 
-    private static final int REQUEST_CODE = 101;
 
     String[] permissions = new String[]{
             Manifest.permission.READ_EXTERNAL_STORAGE
     };
     public static final int MULTIPLE_PERMISSIONS = 10;
+    String checkbtnClick;
 
 
     @Override
@@ -82,35 +81,17 @@ public class Home_Activity extends AppCompatActivity {
         createPDF.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                Intent i = new Intent(getApplicationContext(), MainActivity.class);
-//                startActivity(i);
+                checkbtnClick = "createPDF";
 
-                int result;
-                List<String> listPermissionsNeeded = new ArrayList<>();
-                for (String p : permissions) {
-                    result = ContextCompat.checkSelfPermission(getApplicationContext(), p);
-                    if (result != PackageManager.PERMISSION_GRANTED) {
-                        listPermissionsNeeded.add(p);
 
-                    }
+                if ((ActivityCompat.checkSelfPermission(Home_Activity.this, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED)) {
+                    checkPermissions();
 
-                }
-                if (!listPermissionsNeeded.isEmpty()) {
-                    ActivityCompat.requestPermissions(Home_Activity.this, listPermissionsNeeded.toArray(new String[listPermissionsNeeded.size()]), MULTIPLE_PERMISSIONS);
                     return;
-                } else {
-                    if (permission()) {
-                        if (SDK_INT >= Build.VERSION_CODES.R) {
-                            Intent i = new Intent(getApplicationContext(), MainActivity.class);
-                            startActivity(i);
-                        } else {
-                            Intent i = new Intent(getApplicationContext(), MainActivity.class);
-                            startActivity(i);
-                        }
 
-                    } else {
-                        RequestPermission_Dialog();
-                    }
+                } else {
+                    Intent i = new Intent(getApplicationContext(), MainActivity.class);
+                    startActivity(i);
                 }
 
             }
@@ -118,35 +99,16 @@ public class Home_Activity extends AppCompatActivity {
         PDFhistory.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                Intent i = new Intent(getApplicationContext(), MainActivity.class);
-//                startActivity(i);
+                checkbtnClick = "PDFhistory";
 
-                int result;
-                List<String> listPermissionsNeeded = new ArrayList<>();
-                for (String p : permissions) {
-                    result = ContextCompat.checkSelfPermission(getApplicationContext(), p);
-                    if (result != PackageManager.PERMISSION_GRANTED) {
-                        listPermissionsNeeded.add(p);
+                if ((ActivityCompat.checkSelfPermission(Home_Activity.this, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED)) {
+                    checkPermissions();
 
-                    }
-
-                }
-                if (!listPermissionsNeeded.isEmpty()) {
-                    ActivityCompat.requestPermissions(Home_Activity.this, listPermissionsNeeded.toArray(new String[listPermissionsNeeded.size()]), MULTIPLE_PERMISSIONS);
                     return;
-                } else {
-                    if (permission()) {
-                        if (SDK_INT >= Build.VERSION_CODES.R) {
-                            Intent i = new Intent(getApplicationContext(), Show_pdf_history.class);
-                            startActivity(i);
-                        } else {
-                            Intent i = new Intent(getApplicationContext(), Show_pdf_history.class);
-                            startActivity(i);
-                        }
 
-                    } else {
-                        RequestPermission_Dialog();
-                    }
+                } else {
+                    Intent i = new Intent(getApplicationContext(), Show_pdf_history.class);
+                    startActivity(i);
                 }
 
             }
@@ -154,95 +116,110 @@ public class Home_Activity extends AppCompatActivity {
         mergePDF.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                Intent i = new Intent(getApplicationContext(), MainActivity.class);
-//                startActivity(i);
+                checkbtnClick = "mergePDF";
 
-                int result;
-                List<String> listPermissionsNeeded = new ArrayList<>();
-                for (String p : permissions) {
-                    result = ContextCompat.checkSelfPermission(getApplicationContext(), p);
-                    if (result != PackageManager.PERMISSION_GRANTED) {
-                        listPermissionsNeeded.add(p);
+                if ((ActivityCompat.checkSelfPermission(Home_Activity.this, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED)) {
+                    checkPermissions();
 
-                    }
-
-                }
-                if (!listPermissionsNeeded.isEmpty()) {
-                    ActivityCompat.requestPermissions(Home_Activity.this, listPermissionsNeeded.toArray(new String[listPermissionsNeeded.size()]), MULTIPLE_PERMISSIONS);
                     return;
-                } else {
-                    if (permission()) {
-                        if (SDK_INT >= Build.VERSION_CODES.R) {
-                            Intent i = new Intent(getApplicationContext(), ShowAllPdfForMerge.class);
-                            startActivity(i);
-                        } else {
-                            Intent i = new Intent(getApplicationContext(), ShowAllPdfForMerge.class);
-                            startActivity(i);
-                        }
 
-                    } else {
-                        RequestPermission_Dialog();
-                    }
+                } else {
+                    Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
+                    intent.addCategory(Intent.CATEGORY_OPENABLE);
+                    intent.setType("application/pdf");
+                    intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
+                    intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+                    startActivityForResult(intent, 100);
                 }
+
 
             }
         });
     }
 
 
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+    @Override
+    public void onActivityResult(int requestCode, int resultCode,
+                                 Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == 100) {
+            if (null != data) { // checking empty selection
+                if (null != data.getClipData()) { // checking multiple selection or not
+                    for (int i = 0; i < data.getClipData().getItemCount(); i++) {
+                        String uri = data.getClipData().getItemAt(i).getUri().toString();
+                        mergepdflist.add(uri);
+                    }
+
+                    Intent i = new Intent(getApplicationContext(), ViewPDF.class);
+                    i.putExtra("from", "mergepdf");
+                    startActivity(i);
 
 
-
-    public void RequestPermission_Dialog() {
-        if (SDK_INT >= Build.VERSION_CODES.R) {
-            try {
-                Intent intent = new Intent(Settings.ACTION_MANAGE_ALL_FILES_ACCESS_PERMISSION);
-                intent.addCategory("android.intent.category.DEFAULT");
-                intent.setData(Uri.parse(String.format("package:%s", new Object[]{getApplicationContext().getPackageName()})));
-                startActivityForResult(intent, 2000);
-            } catch (Exception e) {
-                Intent obj = new Intent();
-                obj.setAction(Settings.ACTION_MANAGE_ALL_FILES_ACCESS_PERMISSION);
-                startActivityForResult(obj, 2000);
+                } else {
+                    Uri uri = data.getData();
+                }
             }
-        } else {
-            ActivityCompat.requestPermissions(Home_Activity.this, new String[]{ READ_EXTERNAL_STORAGE}, REQUEST_CODE);
         }
     }
 
 
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
-                                           @NonNull int[] grantResults) {
+    public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         switch (requestCode) {
-            case REQUEST_CODE:
-                if (grantResults.length > 0) {
-                    boolean storage = grantResults[0] == PackageManager.PERMISSION_GRANTED;
-                    boolean read = grantResults[1] == PackageManager.PERMISSION_GRANTED;
-                    Intent i = new Intent(getApplicationContext(), MainActivity.class);
-                    startActivity(i);
-                    if (storage && read) {
+            case MULTIPLE_PERMISSIONS: {
 
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+
+                    if (checkbtnClick.equals("createPDF")) {
+                        Intent i = new Intent(getApplicationContext(), MainActivity.class);
+                        startActivity(i);
+                    } else if (checkbtnClick.equals("PDFhistory")) {
+                        Intent i = new Intent(getApplicationContext(), Show_pdf_history.class);
+                        startActivity(i);
+                    } else {
+                        Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
+                        intent.addCategory(Intent.CATEGORY_OPENABLE);
+                        intent.setType("application/pdf");
+                        intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
+                        intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+                        startActivityForResult(intent, 100);
                     }
-                } else {
-                    Toast.makeText(Home_Activity.this, "Please allow permission", Toast.LENGTH_SHORT).show();
-                }
-                break;
-        }
 
+
+                } else {
+                    Toast.makeText(this, "no permissions granted", Toast.LENGTH_SHORT).show();
+//                    if ((ActivityCompat.checkSelfPermission(Home_Activity.this, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED)) {
+//                        checkPermissions();
+//
+//                        return;
+//
+//                    }
+                    // no permissions granted.
+                }
+
+            }
+
+        }
     }
 
 
-    public boolean permission() {
-        if (SDK_INT >= Build.VERSION_CODES.R) { // R is Android 11
-            return Environment.isExternalStorageManager();
-        } else {
+    private boolean checkPermissions() {
+        int result;
+        List<String> listPermissionsNeeded = new ArrayList<>();
+        for (String p : permissions) {
+            result = ContextCompat.checkSelfPermission(getApplicationContext(), p);
+            if (result != PackageManager.PERMISSION_GRANTED) {
+                listPermissionsNeeded.add(p);
 
-            int read = ContextCompat.checkSelfPermission(getApplicationContext(), READ_EXTERNAL_STORAGE);
-
-            return  read == PackageManager.PERMISSION_GRANTED;
+            }
         }
+        if (!listPermissionsNeeded.isEmpty()) {
+            ActivityCompat.requestPermissions(this, listPermissionsNeeded.toArray(new String[listPermissionsNeeded.size()]), MULTIPLE_PERMISSIONS);
+            return false;
+        }
+        return true;
     }
 
 }

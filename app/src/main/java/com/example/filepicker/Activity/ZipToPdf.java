@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.CountDownTimer;
@@ -329,8 +330,8 @@ public class ZipToPdf extends AppCompatActivity {
         ZipInputStream zis;
         try {
             String getZipfilename;
-            is = new FileInputStream(zipname);
-            zis = new ZipInputStream(new BufferedInputStream(is));
+            is = getContentResolver().openInputStream(Uri.parse(zipname));
+            zis = new ZipInputStream(is);
             ZipEntry ze;
             byte[] buffer = new byte[1024];
             int count;

@@ -59,7 +59,10 @@ MainActivity extends AppCompatActivity {
     ImageButton back_btn;
 
 
-    private static final int PICK_PDF_FILE = 2;
+    private static final int PICK_DOC_FILE = 2;
+    private static final int PICK_ZIP_FILE = 3;
+    private static final int PICK_Txt_FILE = 4;
+
 
     ImageButton pickimage, picktxtFile, pickdocFile, urlTopdf, zipTopdf;
     public static ArrayList<String> pdfpathAry;
@@ -97,8 +100,21 @@ MainActivity extends AppCompatActivity {
         zipTopdf.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i = new Intent(getApplicationContext(), ShowAllZipFile.class);
-                startActivity(i);
+//                Intent i = new Intent(getApplicationContext(), ShowAllZipFile.class);
+//                startActivity(i);
+                Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
+                intent.addCategory(Intent.CATEGORY_OPENABLE);
+                intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, false);
+                intent.setType("application/zip, application/octet-stream, application/x-zip-compressed, multipart/x-zip");
+//                intent.setType("application/pdf");
+//
+//                // Optionally, specify a URI for the file that should appear in the
+//                // system file picker when it loads.
+                intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+//                intent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+
+//                someActivityResultLauncher.launch(intent);
+                startActivityForResult(intent, PICK_ZIP_FILE);
 
             }
         });
@@ -127,8 +143,21 @@ MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                Intent i = new Intent(getApplicationContext(), ShowAllTextFile.class);
-                startActivity(i);
+//                Intent i = new Intent(getApplicationContext(), ShowAllTextFile.class);
+//                startActivity(i);
+                Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
+                intent.addCategory(Intent.CATEGORY_OPENABLE);
+                intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, false);
+                intent.setType("text/plain");
+//                intent.setType("application/pdf");
+//
+//                // Optionally, specify a URI for the file that should appear in the
+//                // system file picker when it loads.
+                intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+//                intent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+
+//                someActivityResultLauncher.launch(intent);
+                startActivityForResult(intent, PICK_Txt_FILE);
             }
         });
         pickdocFile.setOnClickListener(new View.OnClickListener() {
@@ -147,7 +176,7 @@ MainActivity extends AppCompatActivity {
                 intent.setType("*/*");
                 intent.putExtra(Intent.EXTRA_MIME_TYPES, mimetypes);
                 // start activiy
-                startActivityForResult(intent, PICK_PDF_FILE);
+                startActivityForResult(intent, PICK_DOC_FILE);
             }
         });
 
@@ -162,15 +191,36 @@ MainActivity extends AppCompatActivity {
 
         if (resultCode == Activity.RESULT_OK) {
             if (intent != null) {
-                document = intent.getData();
-                Log.d("path2", "" + document);
+                switch (requestCode){
+                    case PICK_DOC_FILE:
+                        document = intent.getData();
+                        Log.d("path2", "" + document);
 
 
-                Intent i = new Intent(getApplicationContext(), ViewPDF.class);
-                i.putExtra("getpdfpath", String.valueOf(document));
-                i.putExtra("from", "docx");
+                        Intent i = new Intent(getApplicationContext(), ViewPDF.class);
+                        i.putExtra("getpdfpath", String.valueOf(document));
+                        i.putExtra("from", "docx");
 //                i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                startActivity(i);
+                        startActivity(i);
+                        break;
+                    case PICK_ZIP_FILE:
+                        String path=intent.getData().toString();
+                        i=new Intent(getApplicationContext(), ZipToPdf.class);
+                        i.putExtra("getpdfpath",path);
+                        i.putExtra("from","zip");
+                        i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        startActivity(i);
+                        break;
+                    case PICK_Txt_FILE:
+                        path=intent.getData().toString();
+                        i=new Intent(getApplicationContext(), ViewPDF.class);
+                        i.putExtra("getpdfpath",path);
+                        i.putExtra("from","txt");
+                        i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        startActivity(i);
+                        break;
+                }
+
 //                Toast.makeText(getApplicationContext(), "" + document, Toast.LENGTH_SHORT).show();
                 // open the selected document into an Input stream
 
