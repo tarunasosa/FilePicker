@@ -54,14 +54,18 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Locale;
 
-public class ViewPDF extends AppCompatActivity {
+public class ViewPDF extends AppCompatActivity implements LoaderManager.LoaderCallbacks<String> {
+    public static final int CAMERA_PERM_CODE = 101;
+    public static final int CAMERA_REQUEST_CODE = 102;
+    public static final int txt_REQUEST_CODE = 100;
+    public static final int docx_REQUEST_CODE = 200;
+    public static final int zip_REQUEST_CODE = 300;
+    private static final int PICK_PDF_FILE = 2;
+    private static final int PICK_Txt_FILE = 3;
     PDFView viewPDF;
     String getpdfpath, from;
     TextView changeText;
     ImageButton back_btn;
-    private int FILE_CODE = 001;
-    public static final int CAMERA_PERM_CODE = 101;
-    public static final int CAMERA_REQUEST_CODE = 102;
     ArrayList<String> pickImage;
     File pdfpath;
     SharedPreferences pref;
@@ -70,16 +74,11 @@ public class ViewPDF extends AppCompatActivity {
     File storeFilePath;
     String storeFilename, txtFileData, path;
     File storeFilepathNname;
-
-    public static final int txt_REQUEST_CODE = 100;
-    public static final int docx_REQUEST_CODE = 200;
-    public static final int zip_REQUEST_CODE = 300;
     ProgressBar progressBar;
     ImageButton fab_add, fab_edit;
+    Uri document;
+    private int FILE_CODE = 001;
     private int TASK_ID = 1;
-    private static final int PICK_PDF_FILE = 2;
-     Uri document;
-    private static final int PICK_Txt_FILE = 3;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -166,58 +165,16 @@ public class ViewPDF extends AppCompatActivity {
             }
 
             Log.d("pdfpathAry", "" + pdfpathAry.size());
-        }
-        else if (from.equals("edited")) {
+        } else if (from.equals("edited")) {
             storeFilepathNname = new File(getpdfpath);
             viewPDF.fromFile(getpdfpath).show();
             pdfpathAry.add(String.valueOf(storeFilepathNname));
 
-        }
-        else if (from.equals("docx")) {
+        } else if (from.equals("docx")) {
+            LoaderManager.getInstance(this).initLoader(1, null, this).forceLoad();
 
 
-            fab_edit.setVisibility(View.GONE);
-
-            Log.d("getpdfpath", "" + getpdfpath);
-            DocxtoPdf();
-            pdfpathAry.add(String.valueOf(storeFilepathNname));
-
-            Log.d("arrrr", "" + pdfpathAry);
-
-            if (pdfpathAry.size() > 1) {
-                new CountDownTimer(1000, 1000) {
-
-                    public void onTick(long millisUntilFinished) {
-
-                    }
-
-                    public void onFinish() {
-                        try {
-                            downloadAndCombinePDFs();
-                            storeFilepathNname = mergepdfpath;
-                            Log.d("arrrr1", "" + storeFilepathNname);
-                            viewPDF.fromFile(mergepdfpath.toString()).show();
-                            progressBar.setVisibility(View.GONE);
-
-                            deleteExitFile();
-
-
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
-
-                    }
-
-                }.start();
-
-            } else {
-                Log.d("arrrr2", "" + storeFilepathNname);
-                viewPDF.fromFile(storeFilepathNname).show();
-                progressBar.setVisibility(View.GONE);
-            }
-
-        }
-        else if (from.equals("image")) {
+        } else if (from.equals("image")) {
             changeText.setText("Preview Image To PDF");
             fab_edit.setVisibility(View.GONE);
 
@@ -257,8 +214,7 @@ public class ViewPDF extends AppCompatActivity {
             }
 
             Log.d("array", "" + pdfpathAry);
-        }
-        else if (from.equals("mergepdf")) {
+        } else if (from.equals("mergepdf")) {
             fab_edit.setVisibility(View.GONE);
             fab_add.setVisibility(View.GONE);
 
@@ -390,7 +346,7 @@ public class ViewPDF extends AppCompatActivity {
         mergepdfpath = null;
         mergepdfpath = new File(storeFilePath.getPath() + File.separator +
                 "/" + filename + ".pdf");
-        Log.d("mergecall","cal..");
+        Log.d("mergecall", "cal..");
 
         final FileOutputStream fileOutputStream = new FileOutputStream(mergepdfpath);
 //        final InputStream in=getContentResolver().openInputStream(Uri.parse(mergepdfpath));
@@ -421,7 +377,7 @@ public class ViewPDF extends AppCompatActivity {
         StringBuilder text = new StringBuilder();
 
         try {
-            InputStream in=getContentResolver().openInputStream(Uri.parse(txtpath));
+            InputStream in = getContentResolver().openInputStream(Uri.parse(txtpath));
             BufferedReader br = new BufferedReader(new InputStreamReader(in));
             String line;
 
@@ -503,7 +459,6 @@ public class ViewPDF extends AppCompatActivity {
                     startActivityForResult(intent, PICK_PDF_FILE);
 
 
-
                 }
                 if (from.equals("image")) {
 
@@ -518,6 +473,7 @@ public class ViewPDF extends AppCompatActivity {
 
 
     }
+
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @Override
     public void onActivityResult(int requestCode, int resultCode,
@@ -526,7 +482,7 @@ public class ViewPDF extends AppCompatActivity {
 
         if (resultCode == Activity.RESULT_OK) {
             if (intent != null) {
-                switch (requestCode){
+                switch (requestCode) {
                     case PICK_PDF_FILE:
                         document = intent.getData();
                         Log.d("path2", "" + document);
@@ -539,15 +495,14 @@ public class ViewPDF extends AppCompatActivity {
                         finish();
                         break;
                     case PICK_Txt_FILE:
-                        String path=intent.getData().toString();
-                        i=new Intent(getApplicationContext(), ViewPDF.class);
-                        i.putExtra("getpdfpath",path);
-                        i.putExtra("from","txt");
+                        String path = intent.getData().toString();
+                        i = new Intent(getApplicationContext(), ViewPDF.class);
+                        i.putExtra("getpdfpath", path);
+                        i.putExtra("from", "txt");
                         startActivity(i);
                         finish();
                         break;
                 }
-
 
 
             }
@@ -578,8 +533,9 @@ public class ViewPDF extends AppCompatActivity {
         storeFilepathNname = new File(storeFilePath.getPath() + File.separator +
                 "/" + storeFilename + ".pdf");
 
-         try (InputStream inputStream =
-                          getContentResolver().openInputStream(Uri.parse(getpdfpath))) {
+
+        try (InputStream inputStream =
+                     getContentResolver().openInputStream(Uri.parse(getpdfpath))) {
 
             com.aspose.words.Document doc = new com.aspose.words.Document(inputStream);
 
@@ -603,6 +559,7 @@ public class ViewPDF extends AppCompatActivity {
         }
     }
 
+
     public void deleteExitFile() {
         for (int i = 0; i < pdfpathAry.size(); i++) {
             File fdelete = new File(pdfpathAry.get(i));
@@ -623,10 +580,9 @@ public class ViewPDF extends AppCompatActivity {
 
         for (int i = 0; i < Home_Activity.mergepdflist.size(); i++) {
 
-            final InputStream in=getContentResolver().openInputStream(Uri.parse(Home_Activity.mergepdflist.get(i)));
+            final InputStream in = getContentResolver().openInputStream(Uri.parse(Home_Activity.mergepdflist.get(i)));
             ut.addSource(in);
         }
-
 
 
         String filename = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(System.currentTimeMillis());
@@ -634,7 +590,7 @@ public class ViewPDF extends AppCompatActivity {
         mergepdfpath = null;
         mergepdfpath = new File(storeFilePath.getPath() + File.separator +
                 "/" + filename + ".pdf");
-        Log.d("mergecall","cal..");
+        Log.d("mergecall", "cal..");
 
         final FileOutputStream fileOutputStream = new FileOutputStream(mergepdfpath);
 //        final InputStream in=getContentResolver().openInputStream(Uri.parse(mergepdfpath));
@@ -650,11 +606,72 @@ public class ViewPDF extends AppCompatActivity {
         Log.d("data", "" + mergepdfpath);
 
 
-
-
     }
 
 
+    @NonNull
+    @NotNull
+    @Override
+    public Loader onCreateLoader(int id, @Nullable @org.jetbrains.annotations.Nullable Bundle args) {
+
+        return new AsyncTaskLoaderEx(getApplicationContext(), getpdfpath);
+
+    }
+
+    @Override
+    public void onLoadFinished(@NonNull @NotNull Loader<String> loader, String data) {
+
+        Toast.makeText(this, "" + data, Toast.LENGTH_SHORT).show();
+        Log.d("datapath", "" + data);
+
+        fab_edit.setVisibility(View.GONE);
+
+        Log.d("getpdfpath", "" + getpdfpath);
+
+        storeFilepathNname = new File(data);
+//            DocxtoPdf();
+        pdfpathAry.add(String.valueOf(storeFilepathNname));
+        Log.d("arrrr", "" + pdfpathAry);
+
+        if (pdfpathAry.size() > 1) {
+            new CountDownTimer(1000, 1000) {
+
+                public void onTick(long millisUntilFinished) {
+
+                }
+
+                public void onFinish() {
+                    try {
+                        downloadAndCombinePDFs();
+                        storeFilepathNname = mergepdfpath;
+                        Log.d("arrrr1", "" + storeFilepathNname);
+                        viewPDF.fromFile(mergepdfpath.toString()).show();
+                        progressBar.setVisibility(View.GONE);
+
+                        deleteExitFile();
+
+
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+
+                }
+
+            }.start();
+
+        } else {
+            Log.d("arrrr2", "" + storeFilepathNname);
+            viewPDF.fromFile(storeFilepathNname).show();
+            progressBar.setVisibility(View.GONE);
+        }
+
+    }
+
+    @Override
+    public void onLoaderReset(@NonNull @NotNull Loader loader) {
+        LoaderManager.getInstance(this).initLoader(1, null, this);
+
+    }
 }
 
 

@@ -1,10 +1,14 @@
 package com.example.filepicker.Activity;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.core.content.FileProvider;
+import androidx.loader.app.LoaderManager;
+import androidx.loader.content.Loader;
 
 import android.Manifest;
 import android.app.Activity;
@@ -16,6 +20,7 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.os.Environment;
 import android.provider.DocumentsContract;
 import android.provider.MediaStore;
@@ -37,6 +42,7 @@ import com.itextpdf.text.pdf.PdfWriter;
 
 import org.apache.pdfbox.io.MemoryUsageSetting;
 import org.apache.pdfbox.multipdf.PDFMergerUtility;
+import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -50,22 +56,16 @@ import java.util.Locale;
 
 
 public class
-MainActivity extends AppCompatActivity {
-
-    private int FILE_ZIP_CODE = 001;
-    private int FILE_TXT_CODE = 002;
-    private int FILE_DOCX_CODE = 003;
-    ArrayList<String> pickImage;
-    ImageButton back_btn;
+MainActivity extends AppCompatActivity   {
 
 
     private static final int PICK_DOC_FILE = 2;
     private static final int PICK_ZIP_FILE = 3;
     private static final int PICK_Txt_FILE = 4;
-
-
-    ImageButton pickimage, picktxtFile, pickdocFile, urlTopdf, zipTopdf;
     public static ArrayList<String> pdfpathAry;
+    ArrayList<String> pickImage;
+    ImageButton back_btn;
+    ImageButton pickimage, picktxtFile, pickdocFile, urlTopdf, zipTopdf;
     Uri document;
 
 
@@ -191,31 +191,35 @@ MainActivity extends AppCompatActivity {
 
         if (resultCode == Activity.RESULT_OK) {
             if (intent != null) {
-                switch (requestCode){
+                switch (requestCode) {
                     case PICK_DOC_FILE:
                         document = intent.getData();
+//                        viewPDF();
+
                         Log.d("path2", "" + document);
-
-
                         Intent i = new Intent(getApplicationContext(), ViewPDF.class);
                         i.putExtra("getpdfpath", String.valueOf(document));
                         i.putExtra("from", "docx");
-//                i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                         startActivity(i);
+
+
+//                        LoaderManager.getInstance(this).initLoader(1, null, this).forceLoad();
+
                         break;
                     case PICK_ZIP_FILE:
-                        String path=intent.getData().toString();
-                        i=new Intent(getApplicationContext(), ZipToPdf.class);
-                        i.putExtra("getpdfpath",path);
-                        i.putExtra("from","zip");
+                        String path = intent.getData().toString();
+                         i = new Intent(getApplicationContext(), ZipToPdf.class);
+                        i.putExtra("getpdfpath", path);
+                        i.putExtra("from", "zip");
                         i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                         startActivity(i);
                         break;
                     case PICK_Txt_FILE:
-                        path=intent.getData().toString();
-                        i=new Intent(getApplicationContext(), ViewPDF.class);
-                        i.putExtra("getpdfpath",path);
-                        i.putExtra("from","txt");
+                        path = intent.getData().toString();
+                        i = new Intent(getApplicationContext(), ViewPDF.class);
+                        i.putExtra("getpdfpath", path);
+                        i.putExtra("from", "txt");
                         i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                         startActivity(i);
                         break;
@@ -227,6 +231,7 @@ MainActivity extends AppCompatActivity {
             }
         }
     }
+
 
 
     @Override
@@ -241,4 +246,6 @@ MainActivity extends AppCompatActivity {
         pdfpathAry.clear();
 
     }
+
+
 }

@@ -1,6 +1,9 @@
 package com.example.filepicker.Activity;
 
 import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
+import android.os.CountDownTimer;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -20,25 +23,24 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 public class AsyncTaskLoaderEx extends AsyncTaskLoader<String> {
     private static final AtomicInteger sCurrentUniqueId = new AtomicInteger(0);
-    private String mData;
-
-    String storeFilename;
-    File storeFilepathNname;
-    File storeFilePath;
-    String getpdfpath;
+    String document;
     Context context;
+    private String mData;
+    private String storeFilename;
+    private File storeFilePath;
+     File storeFilepathNname;
+
+    public AsyncTaskLoaderEx(final Context context, String document) {
+        super(context);
+        this.context = context;
+        this.document = document;
+
+
+        onContentChanged();
+    }
 
     public static int getNewUniqueLoaderId() {
         return sCurrentUniqueId.getAndIncrement();
-    }
-
-    public AsyncTaskLoaderEx(final Context context, File storeFilePath, String getpdfpath) {
-        super(context);
-        this.context=context;
-        this.storeFilePath = storeFilePath;
-        this.getpdfpath = getpdfpath;
-
-        onContentChanged();
     }
 
     @Override
@@ -47,23 +49,22 @@ public class AsyncTaskLoaderEx extends AsyncTaskLoader<String> {
             forceLoad();
         //this part should be removed from support library 27.1.0 :
         //else if (hasResult)
-        //    deliverResult(mData);
+//            deliverResult(mData);
     }
 
     @Override
     public void deliverResult(final String data) {
         mData = data;
+        super.deliverResult(storeFilepathNname.toString());
 
-        super.deliverResult(String.valueOf(storeFilepathNname));
     }
-
     @Override
     protected void onReset() {
         super.onReset();
         onStopLoading();
 
-            onReleaseResources(mData);
-            mData = null;
+        onReleaseResources(mData);
+        mData = null;
 
 
     }
@@ -81,12 +82,28 @@ public class AsyncTaskLoaderEx extends AsyncTaskLoader<String> {
     @Override
     public String loadInBackground() {
         DocxtoPdf();
-        Log.d("datapath", "" + storeFilepathNname);
-        return String.valueOf(storeFilepathNname);
+
+//        Log.d("path2", "" + document);
+//        Intent i = new Intent(context, ViewPDF.class);
+//        i.putExtra("getpdfpath", storeFilepathNname.toString());
+//        i.putExtra("from", "docx");
+//        i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+//        context.startActivity(i);
+
+
+
+        return "";
     }
 
+    public void DocxtoPdf() {
 
-    public String DocxtoPdf() {
+        File file1 = context.getExternalFilesDir("PDFtoANYFormat");
+        String relativePath = file1.getAbsolutePath() + File.separator + "showPDF";
+        storeFilePath = new File(relativePath);
+        if (!storeFilePath.exists()) {
+            storeFilePath.mkdirs();
+            Toast.makeText(context, "create", Toast.LENGTH_SHORT).show();
+        }
 
         storeFilename = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(System.currentTimeMillis());
         //String filepath = Environment.getExternalStorageDirectory() + "/" + filename + ".pdf";
@@ -94,30 +111,27 @@ public class AsyncTaskLoaderEx extends AsyncTaskLoader<String> {
         storeFilepathNname = new File(storeFilePath.getPath() + File.separator +
                 "/" + storeFilename + ".pdf");
 
-        Log.d("dataa:"," "+storeFilename+" "+storeFilepathNname+" "+getpdfpath);
+
+
 
         try (InputStream inputStream =
-                     new FileInputStream(getpdfpath)) {
+                     context.getContentResolver().openInputStream(Uri.parse(document))) {
 
-           Document doc = new Document(inputStream);
+            com.aspose.words.Document doc = new com.aspose.words.Document(inputStream);
 
+            // save DOCX as PDF
             Log.d("name", "" + storeFilepathNname);
             doc.save(String.valueOf(storeFilepathNname));
+            // show PDF file location in toast as well as treeview (optional)
 
+            // view converted PDF
+//            viewPDFFile();
         } catch (FileNotFoundException e) {
             e.printStackTrace();
-            Log.d("catch:","FileNotFoundException");
-            Toast.makeText(context, "File not found: " + e.getMessage(), Toast.LENGTH_LONG).show();
         } catch (IOException e) {
             e.printStackTrace();
-            Log.d("catch:","IOException");
-            Toast.makeText(context, e.getMessage(), Toast.LENGTH_LONG).show();
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
-            Log.d("catch:","Exception");
-            Toast.makeText(context, e.getMessage(), Toast.LENGTH_LONG).show();
         }
-        return String.valueOf(storeFilepathNname);
     }
 }
